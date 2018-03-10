@@ -13,3 +13,7 @@ new HtmlWebpackPluginLite({
   filename: 'demo.html', // Optional, defaults to `index.html`
 }),
 ```
+
+## License
+
+MIT.
