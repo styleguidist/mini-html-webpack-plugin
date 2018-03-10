@@ -5,7 +5,9 @@ The plugin writes CSS and JS asset paths for you automatically. You can also ove
 **Usage:**
 
 ```javascript
-new HtmlWebpackPluginLite({
+const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
+
+new MiniHtmlWebpackPlugin({
   context: {
     title: "Webpack demo", // Available in the context below
   },

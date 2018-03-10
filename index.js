@@ -1,7 +1,7 @@
 const path = require("path");
 const { RawSource } = require("webpack-sources");
 
-class HtmlWebpackPluginLite {
+class MiniHtmlWebpackPlugin {
   constructor(options) {
     this.options = options;
   }
@@ -61,7 +61,7 @@ function generateJSReferences(files = []) {
   return files.map(file => `<script src="/${file}"></script>`);
 }
 
-module.exports = HtmlWebpackPluginLite;
+module.exports = MiniHtmlWebpackPlugin;
 module.exports.defaultTemplate = defaultTemplate;
 module.exports.generateCSSReferences = generateCSSReferences;
 module.exports.generateJSReferences = generateJSReferences;
