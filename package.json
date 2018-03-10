@@ -1,0 +1,24 @@
+{
+  "name": "mini-html-webpack-plugin",
+  "version": "0.0.0",
+  "description": "A miniature version of html-webpack-plugin with less functionality",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webpack"
+  ],
+  "author": "Juho Vepsalainen",
+  "license": "MIT",
+  "dependencies": {
+    "webpack-sources": "^1.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:bebraw/mini-html-webpack-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bebraw/mini-html-webpack-plugin/issues"
+  }
+}
