@@ -5,15 +5,39 @@ The plugin writes CSS and JS asset paths for you automatically. You can also ove
 **Usage:**
 
 ```javascript
-const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
+const MiniHtmlWebpackPlugin = require("mini-html-webpack-plugin");
 
-new MiniHtmlWebpackPlugin({
-  context: {
-    title: "Webpack demo", // Available in the context below
-  },
-  template: ({ css, js, title }) => ... return html ... // Optional
-  filename: 'demo.html', // Optional, defaults to `index.html`
-}),
+const config = {
+  plugins: [
+    new MiniHtmlWebpackPlugin({
+      context: {
+        title: "Webpack demo", // Available in the context below
+      },
+      template: ({ css, js, title }) => ... return html ... // Optional
+      filename: 'demo.html', // Optional, defaults to `index.html`
+    }),
+  ],
+};
+```
+
+## How to Minify HTML?
+
+```javascript
+const minify = require("html-minifier").minify;
+const MiniHtmlWebpackPlugin = require("mini-html-webpack-plugin");
+
+const config = {
+  plugins: [
+    new MiniHtmlWebpackPlugin({
+      context: {
+        title: "Minification demo",
+      },
+      template: context => minify(
+        MiniHtmlWebpackPlugin.defaultTemplate(context)
+      ),
+    }),
+  ],
+};
 ```
 
 ## License
