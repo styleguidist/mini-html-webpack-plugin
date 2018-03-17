@@ -40,6 +40,10 @@ const config = {
 };
 ```
 
+## Custom Templates
+
+If you require more functionality than what the default template provides, see [@vxna/mini-html-webpack-template](https://www.npmjs.com/package/@vxna/mini-html-webpack-template).
+
 ## License
 
 MIT.
