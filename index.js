@@ -9,10 +9,15 @@ class MiniHtmlWebpackPlugin {
     const { filename, template, context } = this.options;
 
     compiler.plugin("emit", (compilation, cb) => {
+      const { publicPath } = compilation.options.output;
       const files = getFiles(compilation.entrypoints);
 
       compilation.assets[filename || "index.html"] = new RawSource(
-        (template || defaultTemplate)({ ...context, ...files })
+        (template || defaultTemplate)({
+          publicPath,
+          ...context,
+          ...files,
+        })
       );
 
       cb();
@@ -38,27 +43,27 @@ function getFiles(entrypoints) {
   return ret;
 }
 
-function defaultTemplate({ css, js, title }) {
+function defaultTemplate({ css, js, title, publicPath }) {
   return `<!DOCTYPE html>
   <html>
     <head>
       <meta charset="UTF-8">
       <title>${title}</title>
 
-      ${generateCSSReferences(css)}
+      ${generateCSSReferences(css, publicPath)}
     </head>
     <body>
-      ${generateJSReferences(js)}
+      ${generateJSReferences(js, publicPath)}
     </body>
   </html>`;
 }
 
-function generateCSSReferences(files = []) {
-  return files.map(file => `<link href="/${file}" rel="stylesheet">`);
+function generateCSSReferences(files = [], publicPath = '') {
+  return files.map(file => `<link href="${publicPath}${file}" rel="stylesheet">`);
 }
 
-function generateJSReferences(files = []) {
-  return files.map(file => `<script src="/${file}"></script>`);
+function generateJSReferences(files = [], publicPath = '') {
+  return files.map(file => `<script src="${publicPath}${file}"></script>`);
 }
 
 module.exports = MiniHtmlWebpackPlugin;
