@@ -2,7 +2,11 @@
 
 The plugin writes CSS and JS asset paths for you automatically. You can also override most of it. It does **not** work with html-webpack-plugin plugins!
 
-**Usage:**
+## Usage
+
+```
+npm install mini-html-webpack-plugin
+```
 
 ```javascript
 const MiniHtmlWebpackPlugin = require("mini-html-webpack-plugin");
@@ -13,7 +17,6 @@ const config = {
       context: {
         title: "Webpack demo", // Available in the context below
       },
-      template: ({ css, js, title }) => ... return html ... // Optional
       filename: 'demo.html', // Optional, defaults to `index.html`
     }),
   ],
@@ -42,7 +45,38 @@ const config = {
 
 ## Custom Templates
 
-If you require more functionality than what the default template provides, see [@vxna/mini-html-webpack-template](https://www.npmjs.com/package/@vxna/mini-html-webpack-template).
+Use [@vxna/mini-html-webpack-template](https://www.npmjs.com/package/@vxna/mini-html-webpack-template) to add an app container div, a favicon, meta tags, inline JavaScript or CSS.
+
+Or define a template function to generate your own code:
+
+```js
+const MiniHtmlWebpackPlugin = require("mini-html-webpack-plugin");
+const { generateCSSReferences, generateJSReferences } = MiniHtmlWebpackPlugin;
+
+const config = {
+  plugins: [
+    new MiniHtmlWebpackPlugin({
+      context: {
+        title: "Custom template",
+      },
+      template: ({ css, js, title, publicPath }) => (
+        `<!DOCTYPE html>
+          <html>
+            <head>
+              <meta charset="UTF-8">
+              <title>${title}</title>
+              ${generateCSSReferences(css, publicPath)}
+            </head>
+            <body>
+              <div id="app"></div>
+              ${generateJSReferences(js, publicPath)}
+            </body>
+          </html>`
+      ),
+    }),
+  ],
+};
+```
 
 ## License
 
