@@ -45,7 +45,7 @@ function getFiles(entrypoints) {
 
 function normalizeEntrypoints(entrypoints) {
   // Webpack 4
-  if (Array.isArray(entrypoints)) {
+  if (entrypoints.forEach) {
     return entrypoints;
   }
 
