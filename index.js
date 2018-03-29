@@ -10,7 +10,7 @@ class MiniHtmlWebpackPlugin {
 
     compiler.plugin("emit", (compilation, cb) => {
       const { publicPath } = compilation.options.output;
-      const files = getFiles(compilation.entrypoints);
+      const files = getFiles(normalizeEntrypoints(compilation.entrypoints));
 
       compilation.assets[filename || "index.html"] = new RawSource(
         (template || defaultTemplate)({
@@ -41,6 +41,16 @@ function getFiles(entrypoints) {
   });
 
   return ret;
+}
+
+function normalizeEntrypoints(entrypoints) {
+  // Webpack 4
+  if (Array.isArray(entrypoints)) {
+    return entrypoints;
+  }
+
+  // Webpack 3
+  return Object.keys(entrypoints).map(name => entrypoints[name]);
 }
 
 function defaultTemplate({ css, js, title, publicPath }) {
