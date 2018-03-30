@@ -1,6 +1,6 @@
 # mini-html-webpack-plugin - A miniature version of html-webpack-plugin with less functionality
 
-[![Build Status](https://travis-ci.org/styleguidist/mini-html-webpack-plugin.svg)](https://travis-ci.org/styleguidist/mini-html-webpack-plugin)
+[![npm](https://img.shields.io/npm/v/mini-html-webpack-plugin.svg)](https://www.npmjs.com/package/mini-html-webpack-plugin) [![Build Status](https://travis-ci.org/styleguidist/mini-html-webpack-plugin.svg)](https://travis-ci.org/styleguidist/mini-html-webpack-plugin)
 
 The plugin writes CSS and JS asset paths for you automatically. You can also override most of it. It does **not** work with html-webpack-plugin plugins!
 

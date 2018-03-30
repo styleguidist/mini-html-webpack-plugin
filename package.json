@@ -1,6 +1,6 @@
 {
   "name": "mini-html-webpack-plugin",
-  "version": "0.2.1",
+  "version": "0.0.0-development",
   "description": "A miniature version of html-webpack-plugin with less functionality",
   "main": "index.js",
   "files": [
