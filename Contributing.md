@@ -2,7 +2,7 @@
 
 We love pull requests. And following this guidelines will make your pull request easier to merge.
 
-If you want to contribute but don’t know what to do, take a look at these two labels: [help wanted](https://github.com/sapegin/mini-html-webpack-plugin/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) and [good first issue](https://github.com/sapegin/mini-html-webpack-plugin/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
+If you want to contribute but don’t know what to do, take a look at these two labels: [help wanted](https://github.com/styleguidist/mini-html-webpack-plugin/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) and [good first issue](https://github.com/styleguidist/mini-html-webpack-plugin/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 
 ## Prerequisites
 
