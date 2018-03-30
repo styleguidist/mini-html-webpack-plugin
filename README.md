@@ -1,8 +1,10 @@
-# mini-html-webpack-plugin - A miniature version of html-webpack-plugin with less functionality
+# mini-html-webpack-plugin: a miniature version of html-webpack-plugin with only necessary features
 
 [![npm](https://img.shields.io/npm/v/mini-html-webpack-plugin.svg)](https://www.npmjs.com/package/mini-html-webpack-plugin) [![Build Status](https://travis-ci.org/styleguidist/mini-html-webpack-plugin.svg)](https://travis-ci.org/styleguidist/mini-html-webpack-plugin)
 
-The plugin writes CSS and JS asset paths for you automatically. You can also override most of it. It does **not** work with html-webpack-plugin plugins!
+The plugin writes CSS and JS asset paths for you automatically. Works with webpack 3 and 4.
+
+**It does not work with html-webpack-plugin plugins!**
 
 ## Usage
 
@@ -17,7 +19,7 @@ const config = {
   plugins: [
     new MiniHtmlWebpackPlugin({
       context: {
-        title: 'Webpack demo' // Available in the context below
+        title: 'Webpack demo'
       },
       filename: 'demo.html' // Optional, defaults to `index.html`
     })
@@ -25,7 +27,7 @@ const config = {
 };
 ```
 
-## How to Minify HTML?
+### HTML minification
 
 ```javascript
 const minify = require('html-minifier').minify;
@@ -44,7 +46,7 @@ const config = {
 };
 ```
 
-## Custom Templates
+### Custom templates
 
 Use [@vxna/mini-html-webpack-template](https://www.npmjs.com/package/@vxna/mini-html-webpack-template) to add an app container div, a favicon, meta tags, inline JavaScript or CSS.
 
@@ -61,7 +63,7 @@ const config = {
   plugins: [
     new MiniHtmlWebpackPlugin({
       context: {
-        title: 'Custom template'
+        title: 'Custom template' // Available in the context below
       },
       template: ({ css, js, title, publicPath }) =>
         `<!DOCTYPE html>
