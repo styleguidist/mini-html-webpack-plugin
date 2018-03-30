@@ -9,37 +9,36 @@ npm install mini-html-webpack-plugin
 ```
 
 ```javascript
-const MiniHtmlWebpackPlugin = require("mini-html-webpack-plugin");
+const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
 
 const config = {
   plugins: [
     new MiniHtmlWebpackPlugin({
       context: {
-        title: "Webpack demo", // Available in the context below
+        title: 'Webpack demo' // Available in the context below
       },
-      filename: 'demo.html', // Optional, defaults to `index.html`
-    }),
-  ],
+      filename: 'demo.html' // Optional, defaults to `index.html`
+    })
+  ]
 };
 ```
 
 ## How to Minify HTML?
 
 ```javascript
-const minify = require("html-minifier").minify;
-const MiniHtmlWebpackPlugin = require("mini-html-webpack-plugin");
+const minify = require('html-minifier').minify;
+const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
 
 const config = {
   plugins: [
     new MiniHtmlWebpackPlugin({
       context: {
-        title: "Minification demo",
+        title: 'Minification demo'
       },
-      template: context => minify(
-        MiniHtmlWebpackPlugin.defaultTemplate(context)
-      ),
-    }),
-  ],
+      template: context =>
+        minify(MiniHtmlWebpackPlugin.defaultTemplate(context))
+    })
+  ]
 };
 ```
 
@@ -50,16 +49,19 @@ Use [@vxna/mini-html-webpack-template](https://www.npmjs.com/package/@vxna/mini-
 Or define a template function to generate your own code:
 
 ```js
-const MiniHtmlWebpackPlugin = require("mini-html-webpack-plugin");
-const { generateCSSReferences, generateJSReferences } = MiniHtmlWebpackPlugin;
+const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
+const {
+  generateCSSReferences,
+  generateJSReferences
+} = MiniHtmlWebpackPlugin;
 
 const config = {
   plugins: [
     new MiniHtmlWebpackPlugin({
       context: {
-        title: "Custom template",
+        title: 'Custom template'
       },
-      template: ({ css, js, title, publicPath }) => (
+      template: ({ css, js, title, publicPath }) =>
         `<!DOCTYPE html>
           <html>
             <head>
@@ -72,9 +74,8 @@ const config = {
               ${generateJSReferences(js, publicPath)}
             </body>
           </html>`
-      ),
-    }),
-  ],
+    })
+  ]
 };
 ```
 

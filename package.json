@@ -3,11 +3,21 @@
   "version": "0.2.1",
   "description": "A miniature version of html-webpack-plugin with less functionality",
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "npm run lint",
+    "test": "true",
+    "posttest": "npm run format",
+    "lint": "eslint . --cache --fix",
+    "format": "prettier --write '**/*.{js,md}'",
+    "precommit": "lint-staged"
   },
   "keywords": [
-    "webpack"
+    "webpack",
+    "html",
+    "template"
   ],
   "author": "Juho Vepsalainen",
   "license": "MIT",
@@ -20,5 +30,25 @@
   },
   "bugs": {
     "url": "https://github.com/bebraw/mini-html-webpack-plugin/issues"
+  },
+  "engines": {
+    "node": ">=6.9"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-tamia": "^5.0.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.0",
+    "prettier": "^1.11.1"
+  },
+  "lint-staged": {
+    "*.{js,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }
