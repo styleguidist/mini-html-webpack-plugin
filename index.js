@@ -2,7 +2,7 @@ const path = require('path');
 const { RawSource } = require('webpack-sources');
 
 class MiniHtmlWebpackPlugin {
-	constructor(options) {
+	constructor(options = {}) {
 		this.options = options;
 	}
 	apply(compiler) {
@@ -53,7 +53,7 @@ function normalizeEntrypoints(entrypoints) {
 	return Object.keys(entrypoints).map(name => entrypoints[name]);
 }
 
-function defaultTemplate({ css, js, title, publicPath }) {
+function defaultTemplate({ css, js, title = '', publicPath }) {
 	return `<!DOCTYPE html>
   <html>
     <head>
@@ -69,13 +69,15 @@ function defaultTemplate({ css, js, title, publicPath }) {
 }
 
 function generateCSSReferences(files = [], publicPath = '') {
-	return files.map(
-		file => `<link href="${publicPath}${file}" rel="stylesheet">`
-	);
+	return files
+		.map(file => `<link href="${publicPath}${file}" rel="stylesheet">`)
+		.join('');
 }
 
 function generateJSReferences(files = [], publicPath = '') {
-	return files.map(file => `<script src="${publicPath}${file}"></script>`);
+	return files
+		.map(file => `<script src="${publicPath}${file}"></script>`)
+		.join('');
 }
 
 module.exports = MiniHtmlWebpackPlugin;

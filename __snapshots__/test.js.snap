@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`custom filename 1`] = `
+"<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset=\\"UTF-8\\">
+      <title></title>
+
+      
+    </head>
+    <body>
+      <script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
+    </body>
+  </html>"
+`;
+
+exports[`custom template 1`] = `"<div>Pizza</div>"`;
+
+exports[`custom title 1`] = `
+"<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset=\\"UTF-8\\">
+      <title>Pizza</title>
+
+      
+    </head>
+    <body>
+      <script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
+    </body>
+  </html>"
+`;
+
+exports[`default options 1`] = `
+"<!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset=\\"UTF-8\\">
+      <title></title>
+
+      
+    </head>
+    <body>
+      <script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
+    </body>
+  </html>"
+`;

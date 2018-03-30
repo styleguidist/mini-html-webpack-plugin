@@ -8,11 +8,14 @@
   ],
   "scripts": {
     "pretest": "npm run lint",
-    "test": "true",
+    "test": "true && npm run test:jest",
     "posttest": "npm run format",
     "lint": "eslint . --cache --fix",
     "format": "prettier --write '**/*.{js,md}'",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "test:jest": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "keywords": [
     "webpack",
@@ -35,11 +38,14 @@
     "node": ">=6.9"
   },
   "devDependencies": {
+    "@webpack-contrib/test-utils": "^0.1.2",
     "eslint": "^4.19.1",
     "eslint-config-tamia": "^5.0.1",
     "husky": "^0.14.3",
+    "jest": "^22.4.3",
     "lint-staged": "^7.0.0",
-    "prettier": "^1.11.1"
+    "prettier": "^1.11.1",
+    "webpack": "^4.4.1"
   },
   "lint-staged": {
     "*.{js,md}": [

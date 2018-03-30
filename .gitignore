@@ -8,3 +8,4 @@ Thumbs.db
 *.log
 yarn.lock
 .eslintcache
+coverage/
