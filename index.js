@@ -13,11 +13,9 @@ class MiniHtmlWebpackPlugin {
 			const files = getFiles(normalizeEntrypoints(compilation.entrypoints));
 
 			compilation.assets[filename || 'index.html'] = new RawSource(
-				(template || defaultTemplate)({
-					publicPath,
-					...context,
-					...files,
-				})
+				(template || defaultTemplate)(
+					Object.assign({}, { publicPath }, context, files)
+				)
 			);
 
 			cb();
