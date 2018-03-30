@@ -4,22 +4,32 @@ const { RawSource } = require('webpack-sources');
 class MiniHtmlWebpackPlugin {
 	constructor(options = {}) {
 		this.options = options;
+		this.plugin = this.plugin.bind(this);
 	}
+
+	plugin(compilation, callback) {
+		const { publicPath } = compilation.options.output;
+		const { filename = 'index.html', template, context } = this.options;
+
+		const files = getFiles(normalizeEntrypoints(compilation.entrypoints));
+
+		compilation.assets[filename] = new RawSource(
+			(template || defaultTemplate)(
+				Object.assign({}, { publicPath }, context, files)
+			)
+		);
+
+		callback();
+	}
+
 	apply(compiler) {
-		const { filename, template, context } = this.options;
-
-		compiler.plugin('emit', (compilation, cb) => {
-			const { publicPath } = compilation.options.output;
-			const files = getFiles(normalizeEntrypoints(compilation.entrypoints));
-
-			compilation.assets[filename || 'index.html'] = new RawSource(
-				(template || defaultTemplate)(
-					Object.assign({}, { publicPath }, context, files)
-				)
-			);
-
-			cb();
-		});
+		if (compiler.hooks) {
+			// Webpack 4
+			compiler.hooks.emit.tapAsync('MiniHtmlWebpackPlugin', this.plugin);
+		} else {
+			// Webpack 3
+			compiler.plugin('emit', this.plugin);
+		}
 	}
 }
 
