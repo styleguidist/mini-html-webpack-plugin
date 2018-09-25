@@ -61,31 +61,49 @@ function normalizeEntrypoints(entrypoints) {
 	return Object.keys(entrypoints).map(name => entrypoints[name]);
 }
 
-function defaultTemplate({ css, js, title = '', publicPath }) {
+function defaultTemplate(context) {
+	const {
+		title = '',
+		css,
+		js,
+		publicPath,
+		jsAttributes,
+		cssAttributes
+	} = context;
+
 	return `<!DOCTYPE html>
   <html>
     <head>
       <meta charset="UTF-8">
       <title>${title}</title>
-
-      ${generateCSSReferences(css, publicPath)}
+      ${generateCSSReferences(css, publicPath, jsAttributes)}
     </head>
     <body>
-      ${generateJSReferences(js, publicPath)}
+      ${generateJSReferences(js, publicPath, cssAttributes)}
     </body>
   </html>`;
 }
 
-function generateCSSReferences(files = [], publicPath = '') {
+function generateCSSReferences(files = [], publicPath = '', attributes = {}) {
+	const attr = generateAttributes(attributes) || '';
+
 	return files
-		.map(file => `<link href="${publicPath}${file}" rel="stylesheet">`)
+		.map(file => `<link href="${publicPath}${file}" rel="stylesheet" ${attr}>`)
 		.join('');
 }
 
-function generateJSReferences(files = [], publicPath = '') {
+function generateJSReferences(files = [], publicPath = '', attributes = {}) {
+	const attr = generateAttributes(attributes) || '';
+
 	return files
-		.map(file => `<script src="${publicPath}${file}"></script>`)
+		.map(file => `<script src="${publicPath}${file}" ${attr}></script>`)
 		.join('');
+}
+
+function generateAttributes(obj) {
+  return Object.keys(obj)
+    .map(key => `${key}="${obj[key]}"`)
+    .join(' ');
 }
 
 module.exports = MiniHtmlWebpackPlugin;
