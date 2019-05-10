@@ -65,9 +65,9 @@ const config = {
       context: {
         title: 'Custom template' // Available in the context below
       },
-      template: ({ css, js, title, publicPath }) =>
+      template: ({ css, js, title, lang, publicPath }) =>
         `<!DOCTYPE html>
-          <html>
+          <html lang=${lang}>
             <head>
               <meta charset="UTF-8">
               <title>${title}</title>

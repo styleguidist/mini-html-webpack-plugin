@@ -61,9 +61,9 @@ function normalizeEntrypoints(entrypoints) {
 	return Object.keys(entrypoints).map(name => entrypoints[name]);
 }
 
-function defaultTemplate({ css, js, title = '', publicPath }) {
+function defaultTemplate({ css, js, title = '', lang = 'en', publicPath }) {
 	return `<!DOCTYPE html>
-  <html>
+  <html lang="${lang}">
     <head>
       <meta charset="UTF-8">
       <title>${title}</title>
