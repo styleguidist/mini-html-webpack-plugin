@@ -19,7 +19,8 @@ const config = {
   plugins: [
     new MiniHtmlWebpackPlugin({
       context: {
-        title: 'Webpack demo'
+        title: 'Webpack demo',
+        htmlAttributes: { lang: 'en' } // Optional, defaults to { lang: 'en' }
       },
       filename: 'demo.html' // Optional, defaults to `index.html`
     })
