@@ -19,7 +19,8 @@ const config = {
   plugins: [
     new MiniHtmlWebpackPlugin({
       context: {
-        title: 'Webpack demo'
+        title: 'Webpack demo',
+        htmlAttributes: { lang: 'en' } // Optional, defaults to { lang: 'en' }
       },
       filename: 'demo.html' // Optional, defaults to `index.html`
     })
@@ -65,9 +66,11 @@ const config = {
       context: {
         title: 'Custom template' // Available in the context below
       },
-      template: ({ css, js, title, publicPath }) =>
+      template: ({ css, js, title, htmlAttributes, publicPath }) =>
         `<!DOCTYPE html>
-          <html>
+          <html ${Object.entries(htmlAttributes)
+            .map(attribute => `${attribute[0]}="${attribute[1]}"`)
+            .join(' ')}>
             <head>
               <meta charset="UTF-8">
               <title>${title}</title>

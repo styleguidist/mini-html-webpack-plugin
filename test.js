@@ -24,11 +24,20 @@ test('custom title', () => {
 	);
 });
 
+test('custom lang', () => {
+	return compiler(
+		{},
+		getConfig({ context: { htmlAttributes: { lang: 'ru' } } })
+	).then(result => {
+		expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	});
+});
+
 test('custom template', () => {
 	return compiler(
 		{},
 		getConfig({
-			context: { title: 'Pizza' },
+			context: { title: 'Pizza', htmlAttributes: { lang: 'it' } },
 			template: ({ title }) => `<div>${title}</div>`,
 		})
 	).then(result => {

@@ -61,9 +61,17 @@ function normalizeEntrypoints(entrypoints) {
 	return Object.keys(entrypoints).map(name => entrypoints[name]);
 }
 
-function defaultTemplate({ css, js, title = '', publicPath }) {
+function defaultTemplate({
+	css,
+	js,
+	title = '',
+	htmlAttributes = { lang: 'en' },
+	publicPath,
+}) {
 	return `<!DOCTYPE html>
-  <html>
+  <html ${Object.entries(htmlAttributes)
+		.map(attribute => `${attribute[0]}="${attribute[1]}"`)
+		.join(' ')}>
     <head>
       <meta charset="UTF-8">
       <title>${title}</title>
