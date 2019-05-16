@@ -11,7 +11,7 @@
     "test": "true && npm run test:jest",
     "posttest": "npm run format",
     "lint": "eslint . --cache --fix",
-    "format": "prettier --write '**/*.{js,md}'",
+    "format": "prettier --write \"**/*.{js,md}\"",
     "test:jest": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
