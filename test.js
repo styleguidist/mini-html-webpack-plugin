@@ -33,6 +33,15 @@ test('custom lang', () => {
 	});
 });
 
+test('custom js attribute', () => {
+	return compiler(
+		{},
+		getConfig({ context: { jsAttributes: { defer: 'defer' } } })
+	).then(result => {
+		expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	});
+});
+
 test('custom template', () => {
 	return compiler(
 		{},

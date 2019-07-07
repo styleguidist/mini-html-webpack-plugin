@@ -15,7 +15,14 @@ class MiniHtmlWebpackPlugin {
 
 		compilation.assets[filename] = new RawSource(
 			(template || defaultTemplate)(
-				Object.assign({}, { publicPath }, context, files)
+				Object.assign(
+					{},
+					{
+						publicPath,
+					},
+					context,
+					files
+				)
 			)
 		);
 
@@ -64,39 +71,79 @@ function normalizeEntrypoints(entrypoints) {
 function defaultTemplate({
 	css,
 	js,
+	publicPath = '',
 	title = '',
-	htmlAttributes = { lang: 'en' },
-	publicPath,
+	htmlAttributes = {
+		lang: 'en',
+	},
+	cssAttributes = {},
+	jsAttributes = {},
 }) {
+	const htmlAttrs = generateAttributes(htmlAttributes);
+
+	const cssTags = generateCSSReferences({
+		files: css,
+		publicPath,
+		cssAttributes: generateAttributes(cssAttributes),
+	});
+
+	const jsTags = generateJSReferences({
+		files: js,
+		publicPath,
+		jsAttributes: generateAttributes(jsAttributes),
+	});
+
 	return `<!DOCTYPE html>
-  <html ${Object.entries(htmlAttributes)
-		.map(attribute => `${attribute[0]}="${attribute[1]}"`)
-		.join(' ')}>
+  <html${htmlAttrs}>
     <head>
       <meta charset="UTF-8">
       <title>${title}</title>
-
-      ${generateCSSReferences(css, publicPath)}
+      ${cssTags}
     </head>
     <body>
-      ${generateJSReferences(js, publicPath)}
+      ${jsTags}
     </body>
   </html>`;
 }
 
-function generateCSSReferences(files = [], publicPath = '') {
+function generateCSSReferences({
+	files = [],
+	publicPath = '',
+	cssAttributes = '',
+}) {
 	return files
-		.map(file => `<link href="${publicPath}${file}" rel="stylesheet">`)
+		.map(
+			file =>
+				`<link href="${publicPath}${file}" rel="stylesheet"${cssAttributes}>`
+		)
 		.join('');
 }
 
-function generateJSReferences(files = [], publicPath = '') {
+function generateJSReferences({
+	files = [],
+	publicPath = '',
+	jsAttributes = '',
+}) {
 	return files
-		.map(file => `<script src="${publicPath}${file}"></script>`)
+		.map(file => `<script src="${publicPath}${file}"${jsAttributes}></script>`)
 		.join('');
+}
+
+function generateAttributes(attributes = {}) {
+	attributes = Object.entries(attributes);
+
+	if (attributes.length === 0) {
+		return '';
+	}
+
+	return (
+		' ' +
+		attributes.map(attribute => `${attribute[0]}="${attribute[1]}"`).join(' ')
+	);
 }
 
 module.exports = MiniHtmlWebpackPlugin;
 module.exports.defaultTemplate = defaultTemplate;
+module.exports.generateAttributes = generateAttributes;
 module.exports.generateCSSReferences = generateCSSReferences;
 module.exports.generateJSReferences = generateJSReferences;
