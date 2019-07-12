@@ -8,22 +8,19 @@ class MiniHtmlWebpackPlugin {
 	}
 
 	plugin(compilation, callback) {
-		const { publicPath } = compilation.options.output;
-		const { filename = 'index.html', template, context } = this.options;
+		const {
+			filename = 'index.html',
+			publicPath = '',
+			template,
+			context,
+		} = this.options;
 
 		const files = getFiles(normalizeEntrypoints(compilation.entrypoints));
 
+		const options = Object.assign({}, { publicPath }, context, files);
+
 		compilation.assets[filename] = new RawSource(
-			(template || defaultTemplate)(
-				Object.assign(
-					{},
-					{
-						publicPath,
-					},
-					context,
-					files
-				)
-			)
+			(template || defaultTemplate)(options)
 		);
 
 		callback();
@@ -83,14 +80,14 @@ function defaultTemplate({
 
 	const cssTags = generateCSSReferences({
 		files: css,
+		attributes: cssAttributes,
 		publicPath,
-		cssAttributes: generateAttributes(cssAttributes),
 	});
 
 	const jsTags = generateJSReferences({
 		files: js,
+		attributes: jsAttributes,
 		publicPath,
-		jsAttributes: generateAttributes(jsAttributes),
 	});
 
 	return `<!DOCTYPE html>
@@ -109,12 +106,13 @@ function defaultTemplate({
 function generateCSSReferences({
 	files = [],
 	publicPath = '',
-	cssAttributes = '',
+	attributes = {},
 }) {
+	attributes = generateAttributes(attributes);
+
 	return files
 		.map(
-			file =>
-				`<link href="${publicPath}${file}" rel="stylesheet"${cssAttributes}>`
+			file => `<link href="${publicPath}${file}" rel="stylesheet"${attributes}>`
 		)
 		.join('');
 }
@@ -122,10 +120,12 @@ function generateCSSReferences({
 function generateJSReferences({
 	files = [],
 	publicPath = '',
-	jsAttributes = '',
+	attributes = {},
 }) {
+	attributes = generateAttributes(attributes);
+
 	return files
-		.map(file => `<script src="${publicPath}${file}"${jsAttributes}></script>`)
+		.map(file => `<script src="${publicPath}${file}"${attributes}></script>`)
 		.join('');
 }
 

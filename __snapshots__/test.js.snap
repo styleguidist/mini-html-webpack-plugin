@@ -42,6 +42,20 @@ exports[`custom lang 1`] = `
   </html>"
 `;
 
+exports[`custom publicPath 1`] = `
+"<!DOCTYPE html>
+  <html lang=\\"en\\">
+    <head>
+      <meta charset=\\"UTF-8\\">
+      <title></title>
+      
+    </head>
+    <body>
+      <script src=\\"pizza/runtime~main.js\\"></script><script src=\\"pizza/main.js\\"></script>
+    </body>
+  </html>"
+`;
+
 exports[`custom template 1`] = `"<div>Pizza</div>"`;
 
 exports[`custom title 1`] = `

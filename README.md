@@ -94,14 +94,14 @@ const config = {
 
         const cssTags = generateCSSReferences({
           files: css,
-          publicPath,
-          cssAttributes: generateAttributes(cssAttributes)
+          attributes: cssAttributes,
+          publicPath
         });
 
         const jsTags = generateJSReferences({
           files: js,
-          publicPath,
-          jsAttributes: generateAttributes(jsAttributes)
+          attributes: jsAttributes,
+          publicPath
         });
 
         return `<!DOCTYPE html>
