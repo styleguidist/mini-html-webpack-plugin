@@ -8,7 +8,7 @@ The plugin writes CSS and JS asset paths for you automatically. Works with webpa
 
 ## Usage
 
-```
+```sh
 npm install mini-html-webpack-plugin
 ```
 
@@ -18,11 +18,19 @@ const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
 const config = {
   plugins: [
     new MiniHtmlWebpackPlugin({
+      // Optional, defaults to `index.html`
+      filename: 'demo.html',
+      // Optional
+      publicPath: 'demo/',
       context: {
         title: 'Webpack demo',
-        htmlAttributes: { lang: 'en' } // Optional, defaults to { lang: 'en' }
-      },
-      filename: 'demo.html' // Optional, defaults to `index.html`
+        // Optional, defaults to `{ lang: 'en' }`
+        htmlAttributes: { lang: 'en' },
+        // Optional
+        cssAttributes: { rel: 'preload' },
+        // Optional
+        jsAttributes: { defer: 'defer' }
+      }
     })
   ]
 };
@@ -56,6 +64,7 @@ Or define a template function to generate your own code:
 ```js
 const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
 const {
+  generateAttributes,
   generateCSSReferences,
   generateJSReferences
 } = MiniHtmlWebpackPlugin;
@@ -63,24 +72,50 @@ const {
 const config = {
   plugins: [
     new MiniHtmlWebpackPlugin({
+      filename: 'demo.html',
+      publicPath: 'demo/',
+      // `context` is available in `template` below
       context: {
-        title: 'Custom template' // Available in the context below
+        title: 'Webpack demo',
+        htmlAttributes: { lang: 'en' },
+        cssAttributes: { rel: 'preload' },
+        jsAttributes: { defer: 'defer' }
       },
-      template: ({ css, js, title, htmlAttributes, publicPath }) =>
-        `<!DOCTYPE html>
-          <html ${Object.entries(htmlAttributes)
-            .map(attribute => `${attribute[0]}="${attribute[1]}"`)
-            .join(' ')}>
-            <head>
-              <meta charset="UTF-8">
-              <title>${title}</title>
-              ${generateCSSReferences(css, publicPath)}
-            </head>
-            <body>
-              <div id="app"></div>
-              ${generateJSReferences(js, publicPath)}
-            </body>
-          </html>`
+      template: ({
+        css,
+        js,
+        publicPath,
+        title,
+        htmlAttributes,
+        cssAttributes,
+        jsAttributes
+      }) => {
+        const htmlAttrs = generateAttributes(htmlAttributes);
+
+        const cssTags = generateCSSReferences({
+          files: css,
+          attributes: cssAttributes,
+          publicPath
+        });
+
+        const jsTags = generateJSReferences({
+          files: js,
+          attributes: jsAttributes,
+          publicPath
+        });
+
+        return `<!DOCTYPE html>
+        <html${htmlAttrs}>
+          <head>
+            <meta charset="UTF-8">
+            <title>${title}</title>
+            ${cssTags}
+          </head>
+          <body>
+            ${jsTags}
+          </body>
+        </html>`;
+      }
     })
   ]
 };

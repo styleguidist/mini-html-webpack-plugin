@@ -33,6 +33,15 @@ test('custom lang', () => {
 	});
 });
 
+test('custom js attribute', () => {
+	return compiler(
+		{},
+		getConfig({ context: { jsAttributes: { defer: 'defer' } } })
+	).then(result => {
+		expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	});
+});
+
 test('custom template', () => {
 	return compiler(
 		{},
@@ -52,10 +61,8 @@ test('custom filename', () => {
 	});
 });
 
-// TODO: https://github.com/webpack-contrib/test-utils/issues/2
-/* test('custom publicPath', () => {
-	const publicPath = '/pizza/';
-	return compiler({}, getConfig({}, { output: { publicPath } })).then(result => {
+test('custom publicPath', () => {
+	return compiler({}, getConfig({ publicPath: 'pizza/' })).then(result => {
 		expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
 	});
-}); */
+});

@@ -8,15 +8,19 @@ class MiniHtmlWebpackPlugin {
 	}
 
 	plugin(compilation, callback) {
-		const { publicPath } = compilation.options.output;
-		const { filename = 'index.html', template, context } = this.options;
+		const {
+			filename = 'index.html',
+			publicPath = '',
+			template,
+			context,
+		} = this.options;
 
 		const files = getFiles(normalizeEntrypoints(compilation.entrypoints));
 
+		const options = Object.assign({}, { publicPath }, context, files);
+
 		compilation.assets[filename] = new RawSource(
-			(template || defaultTemplate)(
-				Object.assign({}, { publicPath }, context, files)
-			)
+			(template || defaultTemplate)(options)
 		);
 
 		callback();
@@ -64,39 +68,82 @@ function normalizeEntrypoints(entrypoints) {
 function defaultTemplate({
 	css,
 	js,
+	publicPath = '',
 	title = '',
-	htmlAttributes = { lang: 'en' },
-	publicPath,
+	htmlAttributes = {
+		lang: 'en',
+	},
+	cssAttributes = {},
+	jsAttributes = {},
 }) {
+	const htmlAttrs = generateAttributes(htmlAttributes);
+
+	const cssTags = generateCSSReferences({
+		files: css,
+		attributes: cssAttributes,
+		publicPath,
+	});
+
+	const jsTags = generateJSReferences({
+		files: js,
+		attributes: jsAttributes,
+		publicPath,
+	});
+
 	return `<!DOCTYPE html>
-  <html ${Object.entries(htmlAttributes)
-		.map(attribute => `${attribute[0]}="${attribute[1]}"`)
-		.join(' ')}>
+  <html${htmlAttrs}>
     <head>
       <meta charset="UTF-8">
       <title>${title}</title>
-
-      ${generateCSSReferences(css, publicPath)}
+      ${cssTags}
     </head>
     <body>
-      ${generateJSReferences(js, publicPath)}
+      ${jsTags}
     </body>
   </html>`;
 }
 
-function generateCSSReferences(files = [], publicPath = '') {
+function generateCSSReferences({
+	files = [],
+	publicPath = '',
+	attributes = {},
+}) {
+	attributes = generateAttributes(attributes);
+
 	return files
-		.map(file => `<link href="${publicPath}${file}" rel="stylesheet">`)
+		.map(
+			file => `<link href="${publicPath}${file}" rel="stylesheet"${attributes}>`
+		)
 		.join('');
 }
 
-function generateJSReferences(files = [], publicPath = '') {
+function generateJSReferences({
+	files = [],
+	publicPath = '',
+	attributes = {},
+}) {
+	attributes = generateAttributes(attributes);
+
 	return files
-		.map(file => `<script src="${publicPath}${file}"></script>`)
+		.map(file => `<script src="${publicPath}${file}"${attributes}></script>`)
 		.join('');
+}
+
+function generateAttributes(attributes = {}) {
+	attributes = Object.entries(attributes);
+
+	if (attributes.length === 0) {
+		return '';
+	}
+
+	return (
+		' ' +
+		attributes.map(attribute => `${attribute[0]}="${attribute[1]}"`).join(' ')
+	);
 }
 
 module.exports = MiniHtmlWebpackPlugin;
 module.exports.defaultTemplate = defaultTemplate;
+module.exports.generateAttributes = generateAttributes;
 module.exports.generateCSSReferences = generateCSSReferences;
 module.exports.generateJSReferences = generateJSReferences;
