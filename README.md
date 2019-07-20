@@ -25,11 +25,18 @@ const config = {
       context: {
         title: 'Webpack demo',
         // Optional, defaults to `{ lang: 'en' }`
-        htmlAttributes: { lang: 'en' },
+        htmlAttributes: {
+          lang: 'en'
+        },
         // Optional
-        cssAttributes: { rel: 'preload' },
+        cssAttributes: {
+          rel: 'preload',
+          as: 'style'
+        },
         // Optional
-        jsAttributes: { defer: 'defer' }
+        jsAttributes: {
+          defer: ''
+        }
       }
     })
   ]
@@ -77,9 +84,16 @@ const config = {
       // `context` is available in `template` below
       context: {
         title: 'Webpack demo',
-        htmlAttributes: { lang: 'en' },
-        cssAttributes: { rel: 'preload' },
-        jsAttributes: { defer: 'defer' }
+        htmlAttributes: {
+          lang: 'en'
+        },
+        cssAttributes: {
+          rel: 'preload',
+          as: 'style'
+        },
+        jsAttributes: {
+          defer: ''
+        }
       },
       template: ({
         css,

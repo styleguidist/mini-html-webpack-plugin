@@ -10,7 +10,7 @@ class MiniHtmlWebpackPlugin {
 	plugin(compilation, callback) {
 		const {
 			filename = 'index.html',
-			publicPath = '',
+			publicPath,
 			template,
 			context,
 		} = this.options;
@@ -108,11 +108,16 @@ function generateCSSReferences({
 	publicPath = '',
 	attributes = {},
 }) {
+	const hasRelAttribute =
+		typeof attributes.rel === 'string' && attributes.rel.length > 0;
+
+	const relStylesheet = hasRelAttribute ? '' : ' rel="stylesheet"';
+
 	attributes = generateAttributes(attributes);
 
 	return files
 		.map(
-			file => `<link href="${publicPath}${file}" rel="stylesheet"${attributes}>`
+			file => `<link href="${publicPath}${file}"${relStylesheet}${attributes}>`
 		)
 		.join('');
 }
@@ -138,7 +143,14 @@ function generateAttributes(attributes = {}) {
 
 	return (
 		' ' +
-		attributes.map(attribute => `${attribute[0]}="${attribute[1]}"`).join(' ')
+		attributes
+			.map(attr => {
+				if (typeof attr[1] === 'string' && attr[1].length === 0) {
+					return attr[0];
+				}
+				return `${attr[0]}="${attr[1]}"`;
+			})
+			.join(' ')
 	);
 }
 
