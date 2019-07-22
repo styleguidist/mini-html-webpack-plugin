@@ -1,11 +1,23 @@
-const MiniHtmlWebpackPlugin = require('./index');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const compiler = require('@webpack-contrib/test-utils');
+const MiniHtmlWebpackPlugin = require('./index');
 
 const getConfig = (options, config = {}) =>
 	Object.assign(
 		{
-			entry: ['./index.js'],
-			plugins: [new MiniHtmlWebpackPlugin(options)],
+			entry: ['./main.js'],
+			module: {
+				rules: [
+					{
+						test: /\.css$/,
+						use: [
+							{ loader: MiniCssExtractPlugin.loader },
+							{ loader: 'css-loader' },
+						],
+					},
+				],
+			},
+			plugins: [new MiniCssExtractPlugin(), new MiniHtmlWebpackPlugin(options)],
 		},
 		config
 	);
@@ -33,15 +45,6 @@ test('custom lang', () => {
 	});
 });
 
-test('custom js attribute', () => {
-	return compiler(
-		{},
-		getConfig({ context: { jsAttributes: { defer: 'defer' } } })
-	).then(result => {
-		expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
-	});
-});
-
 test('custom template', () => {
 	return compiler(
 		{},
@@ -63,6 +66,25 @@ test('custom filename', () => {
 
 test('custom publicPath', () => {
 	return compiler({}, getConfig({ publicPath: 'pizza/' })).then(result => {
+		expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	});
+});
+
+test('custom attributes', () => {
+	return compiler(
+		{},
+		getConfig({
+			context: {
+				cssAttributes: {
+					rel: 'preload',
+					as: 'style',
+				},
+				jsAttributes: {
+					defer: true,
+				},
+			},
+		})
+	).then(result => {
 		expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
 	});
 });

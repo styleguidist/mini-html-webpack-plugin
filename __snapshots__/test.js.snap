@@ -1,5 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`custom attributes 1`] = `
+"<!DOCTYPE html>
+  <html lang=\\"en\\">
+    <head>
+      <meta charset=\\"UTF-8\\">
+      <title></title>
+      
+    </head>
+    <body>
+      <script src=\\"runtime~main.js\\" defer></script><script src=\\"main.js\\" defer></script>
+    </body>
+  </html>"
+`;
+
 exports[`custom filename 1`] = `
 "<!DOCTYPE html>
   <html lang=\\"en\\">
@@ -10,20 +24,6 @@ exports[`custom filename 1`] = `
     </head>
     <body>
       <script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
-    </body>
-  </html>"
-`;
-
-exports[`custom js attribute 1`] = `
-"<!DOCTYPE html>
-  <html lang=\\"en\\">
-    <head>
-      <meta charset=\\"UTF-8\\">
-      <title></title>
-      
-    </head>
-    <body>
-      <script src=\\"runtime~main.js\\" defer=\\"defer\\"></script><script src=\\"main.js\\" defer=\\"defer\\"></script>
     </body>
   </html>"
 `;

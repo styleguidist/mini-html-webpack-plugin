@@ -108,17 +108,15 @@ function generateCSSReferences({
 	publicPath = '',
 	attributes = {},
 }) {
-	const hasRelAttribute =
-		typeof attributes.rel === 'string' && attributes.rel.length > 0;
+	const allAttributes = {
+		...attributes,
+		rel: 'rel' in attributes ? attributes.rel : 'stylesheet',
+	};
 
-	const relStylesheet = hasRelAttribute ? '' : ' rel="stylesheet"';
-
-	attributes = generateAttributes(attributes);
+	attributes = generateAttributes(allAttributes);
 
 	return files
-		.map(
-			file => `<link href="${publicPath}${file}"${relStylesheet}${attributes}>`
-		)
+		.map(file => `<link href="${publicPath}${file}"${attributes}>`)
 		.join('');
 }
 
@@ -145,7 +143,7 @@ function generateAttributes(attributes = {}) {
 		' ' +
 		attributes
 			.map(attr => {
-				if (typeof attr[1] === 'string' && attr[1].length === 0) {
+				if (attr[1] === true) {
 					return attr[0];
 				}
 				return `${attr[0]}="${attr[1]}"`;

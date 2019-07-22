@@ -35,7 +35,7 @@ const config = {
         },
         // Optional
         jsAttributes: {
-          defer: ''
+          defer: true
         }
       }
     })
@@ -92,7 +92,7 @@ const config = {
           as: 'style'
         },
         jsAttributes: {
-          defer: ''
+          defer: true
         }
       },
       template: ({
