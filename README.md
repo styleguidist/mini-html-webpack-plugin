@@ -30,9 +30,37 @@ const config = {
         cssAttributes: { rel: 'preload' },
         // Optional
         jsAttributes: { defer: 'defer' }
-      }
+      },
+      // Optional, use this for choosing chunks to include to your page.
+      // See the expanded example below.
+      chunks: ['app']
     })
   ]
+};
+```
+
+### Multiple pages
+
+In the example below, we generate two separate pages and choose bundles from specific entries to them. This is useful for multi-page apps or sites.
+
+```javascript
+const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
+
+const config = {
+  entry: {
+    app: './app.js',
+    another: './another.js'
+  },
+  plugins: [
+    new MiniHtmlWebpackPlugin({
+      filename: 'index.html',
+      chunks: ['app'],
+    }),
+    new MiniHtmlWebpackPlugin({
+      filename: 'another.html',
+      chunks: ['another'],
+    },
+  ],
 };
 ```
 

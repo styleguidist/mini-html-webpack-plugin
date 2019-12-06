@@ -16,6 +16,30 @@ test('default options', () => {
 	});
 });
 
+test('custom chunks', () => {
+	return compiler(
+		{},
+		{
+			entry: {
+				index: './index.js',
+				another: './another.js',
+			},
+			plugins: [
+				new MiniHtmlWebpackPlugin({
+					filename: 'index.html',
+					chunks: ['index'],
+				}),
+				new MiniHtmlWebpackPlugin({
+					filename: 'another.html',
+					chunks: ['another'],
+				}),
+			],
+		}
+	).then(result => {
+		expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	});
+});
+
 test('custom title', () => {
 	return compiler({}, getConfig({ context: { title: 'Pizza' } })).then(
 		result => {
