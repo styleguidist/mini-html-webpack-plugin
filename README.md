@@ -41,7 +41,9 @@ const config = {
 
 ### Multiple pages
 
-In the example below, we generate two separate pages and choose bundles from specific entries to them. This is useful for multi-page apps or sites.
+It's possible to use `MiniHtmlWebpackPlugin` to develop sites with multiple pages. It can be combined with webpack's bundle splitting so you can share common code across different pages.
+
+To achieve this, you'll have to define `entry` against each the code for each page and define `MiniHtmlWebpackPlugin` to match them. In practice you might want to abstract this pairing but to give you the full idea, consider the example below.
 
 ```javascript
 const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');

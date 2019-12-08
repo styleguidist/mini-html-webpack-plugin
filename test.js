@@ -36,7 +36,13 @@ test('custom chunks', () => {
 			],
 		}
 	).then(result => {
+		// This should contain only reference to the index chunk and the related
+		// runtime.
 		expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+
+		// This should contain only reference to the another chunk and the related
+		// runtime.
+		expect(result.compilation.assets['another.html']._value).toMatchSnapshot();
 	});
 });
 
