@@ -1,5 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`custom chunks 1`] = `
+"<!DOCTYPE html>
+  <html lang=\\"en\\">
+    <head>
+      <meta charset=\\"UTF-8\\">
+      <title></title>
+      
+    </head>
+    <body>
+      <script src=\\"runtime~index.js\\"></script><script src=\\"index.js\\"></script>
+    </body>
+  </html>"
+`;
+
+exports[`custom chunks 2`] = `
+"<!DOCTYPE html>
+  <html lang=\\"en\\">
+    <head>
+      <meta charset=\\"UTF-8\\">
+      <title></title>
+      
+    </head>
+    <body>
+      <script src=\\"runtime~another.js\\"></script><script src=\\"another.js\\"></script>
+    </body>
+  </html>"
+`;
+
 exports[`custom filename 1`] = `
 "<!DOCTYPE html>
   <html lang=\\"en\\">

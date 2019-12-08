@@ -13,9 +13,13 @@ class MiniHtmlWebpackPlugin {
 			publicPath = '',
 			template,
 			context,
+			chunks,
 		} = this.options;
 
-		const files = getFiles(normalizeEntrypoints(compilation.entrypoints));
+		const files = getFiles(
+			normalizeEntrypoints(compilation.entrypoints),
+			chunks
+		);
 
 		const options = Object.assign({}, { publicPath }, context, files);
 
@@ -37,10 +41,14 @@ class MiniHtmlWebpackPlugin {
 	}
 }
 
-function getFiles(entrypoints) {
+function getFiles(entrypoints, chunks) {
 	const ret = {};
 
 	entrypoints.forEach(entry => {
+		if (chunks && !chunks.includes(entry.name)) {
+			return;
+		}
+
 		entry.getFiles().forEach(file => {
 			const extension = path.extname(file).replace(/\./, '');
 

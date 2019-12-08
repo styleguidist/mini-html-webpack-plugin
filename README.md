@@ -30,9 +30,39 @@ const config = {
         cssAttributes: { rel: 'preload' },
         // Optional
         jsAttributes: { defer: 'defer' }
-      }
+      },
+      // Optional, use this for choosing chunks to include to your page.
+      // See the expanded example below.
+      chunks: ['app']
     })
   ]
+};
+```
+
+### Multiple pages
+
+It's possible to use `MiniHtmlWebpackPlugin` to develop sites with multiple pages. It can be combined with webpack's bundle splitting so you can share common code across different pages.
+
+To achieve this, you'll have to define `entry` against each the code for each page and define `MiniHtmlWebpackPlugin` to match them. In practice you might want to abstract this pairing but to give you the full idea, consider the example below.
+
+```javascript
+const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
+
+const config = {
+  entry: {
+    app: './app.js',
+    another: './another.js'
+  },
+  plugins: [
+    new MiniHtmlWebpackPlugin({
+      filename: 'index.html',
+      chunks: ['app'],
+    }),
+    new MiniHtmlWebpackPlugin({
+      filename: 'another.html',
+      chunks: ['another'],
+    },
+  ],
 };
 ```
 
