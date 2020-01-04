@@ -63,6 +63,14 @@ test('custom lang', () => {
 	});
 });
 
+test('additional body', () => {
+	return compiler({}, getConfig({ context: { body: '<div>Demo</div>' } })).then(
+		result => {
+			expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+		}
+	);
+});
+
 test('custom js attribute', () => {
 	return compiler(
 		{},

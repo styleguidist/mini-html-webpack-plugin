@@ -1,5 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`additional body 1`] = `
+"<!DOCTYPE html>
+  <html lang=\\"en\\">
+    <head>
+      <meta charset=\\"UTF-8\\">
+      <title></title>
+      
+    </head>
+		<body>
+			<div>Demo</div><script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
+    </body>
+  </html>"
+`;
+
 exports[`custom chunks 1`] = `
 "<!DOCTYPE html>
   <html lang=\\"en\\">
@@ -8,8 +22,8 @@ exports[`custom chunks 1`] = `
       <title></title>
       
     </head>
-    <body>
-      <script src=\\"runtime~index.js\\"></script><script src=\\"index.js\\"></script>
+		<body>
+			<script src=\\"runtime~index.js\\"></script><script src=\\"index.js\\"></script>
     </body>
   </html>"
 `;
@@ -22,8 +36,8 @@ exports[`custom chunks 2`] = `
       <title></title>
       
     </head>
-    <body>
-      <script src=\\"runtime~another.js\\"></script><script src=\\"another.js\\"></script>
+		<body>
+			<script src=\\"runtime~another.js\\"></script><script src=\\"another.js\\"></script>
     </body>
   </html>"
 `;
@@ -36,8 +50,8 @@ exports[`custom filename 1`] = `
       <title></title>
       
     </head>
-    <body>
-      <script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
+		<body>
+			<script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
     </body>
   </html>"
 `;
@@ -50,8 +64,8 @@ exports[`custom js attribute 1`] = `
       <title></title>
       
     </head>
-    <body>
-      <script src=\\"runtime~main.js\\" defer=\\"defer\\"></script><script src=\\"main.js\\" defer=\\"defer\\"></script>
+		<body>
+			<script src=\\"runtime~main.js\\" defer=\\"defer\\"></script><script src=\\"main.js\\" defer=\\"defer\\"></script>
     </body>
   </html>"
 `;
@@ -64,8 +78,8 @@ exports[`custom lang 1`] = `
       <title></title>
       
     </head>
-    <body>
-      <script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
+		<body>
+			<script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
     </body>
   </html>"
 `;
@@ -78,8 +92,8 @@ exports[`custom publicPath 1`] = `
       <title></title>
       
     </head>
-    <body>
-      <script src=\\"pizza/runtime~main.js\\"></script><script src=\\"pizza/main.js\\"></script>
+		<body>
+			<script src=\\"pizza/runtime~main.js\\"></script><script src=\\"pizza/main.js\\"></script>
     </body>
   </html>"
 `;
@@ -94,8 +108,8 @@ exports[`custom title 1`] = `
       <title>Pizza</title>
       
     </head>
-    <body>
-      <script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
+		<body>
+			<script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
     </body>
   </html>"
 `;
@@ -108,8 +122,8 @@ exports[`default options 1`] = `
       <title></title>
       
     </head>
-    <body>
-      <script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
+		<body>
+			<script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
     </body>
   </html>"
 `;

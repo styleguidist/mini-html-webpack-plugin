@@ -81,6 +81,7 @@ function defaultTemplate({
 	htmlAttributes = {
 		lang: 'en',
 	},
+	body = '',
 	cssAttributes = {},
 	jsAttributes = {},
 }) {
@@ -105,8 +106,8 @@ function defaultTemplate({
       <title>${title}</title>
       ${cssTags}
     </head>
-    <body>
-      ${jsTags}
+		<body>
+			${body}${jsTags}
     </body>
   </html>`;
 }
