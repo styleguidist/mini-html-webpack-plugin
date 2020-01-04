@@ -107,8 +107,8 @@ function defaultTemplate({
       <title>${title}</title>
       ${head}${cssTags}
     </head>
-		<body>
-			${body}${jsTags}
+    <body>
+      ${body}${jsTags}
     </body>
   </html>`;
 }
