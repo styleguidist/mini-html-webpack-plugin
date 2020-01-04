@@ -26,6 +26,8 @@ const config = {
         title: 'Webpack demo',
         // Optional, defaults to `{ lang: 'en' }`
         htmlAttributes: { lang: 'en' },
+        // Optional, any additional HTML attached within <head>
+        head: '',
         // Optional, any additional HTML attached within <body>
         body: '',
         // Optional
