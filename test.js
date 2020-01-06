@@ -63,6 +63,28 @@ test('custom lang', () => {
 	});
 });
 
+test('additional head', () => {
+	return compiler(
+		{},
+		getConfig({
+			context: {
+				head:
+					'<meta name="viewport" content="width=device-width, initial-scale=1.0" />',
+			},
+		})
+	).then(result => {
+		expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	});
+});
+
+test('additional body', () => {
+	return compiler({}, getConfig({ context: { body: '<div>Demo</div>' } })).then(
+		result => {
+			expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+		}
+	);
+});
+
 test('custom js attribute', () => {
 	return compiler(
 		{},
