@@ -28,6 +28,8 @@ exports[`additional head 1`] = `
   </html>"
 `;
 
+exports[`custom async template 1`] = `"<div>Pizza</div>"`;
+
 exports[`custom chunks 1`] = `
 "<!DOCTYPE html>
   <html lang=\\"en\\">

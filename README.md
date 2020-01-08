@@ -93,7 +93,9 @@ const config = {
 
 Use [@vxna/mini-html-webpack-template](https://www.npmjs.com/package/@vxna/mini-html-webpack-template) to add an app container div, a favicon, meta tags, inline JavaScript or CSS.
 
-Or define a template function to generate your own code:
+Or define a template function to generate your own code.
+
+The template function may return a string or a Promise resolving to a string.
 
 ```js
 const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
