@@ -106,6 +106,21 @@ test('custom template', () => {
 	});
 });
 
+test('custom async template', () => {
+	return compiler(
+		{},
+		getConfig({
+			context: { title: 'Pizza' },
+			template: ({ title }) => {
+				const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+				return delay(50).then(() => `<div>${title}</div>`);
+			},
+		})
+	).then(result => {
+		expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	});
+});
+
 test('custom filename', () => {
 	const filename = 'pizza.html';
 	return compiler({}, getConfig({ filename })).then(result => {

@@ -23,11 +23,10 @@ class MiniHtmlWebpackPlugin {
 
 		const options = Object.assign({}, { publicPath }, context, files);
 
-		compilation.assets[filename] = new RawSource(
-			(template || defaultTemplate)(options)
-		);
-
-		callback();
+		Promise.resolve((template || defaultTemplate)(options)).then(source => {
+			compilation.assets[filename] = new RawSource(source);
+			callback();
+		});
 	}
 
 	apply(compiler) {
