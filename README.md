@@ -95,7 +95,7 @@ Use [@vxna/mini-html-webpack-template](https://www.npmjs.com/package/@vxna/mini-
 
 Or define a template function to generate your own code.
 
-The template function may return a string or a Promise resolving to a string.
+The template function may return a string or a `Promise` resolving to a string.
 
 ```js
 const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
