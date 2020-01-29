@@ -112,17 +112,16 @@ function defaultTemplate({
   </html>`;
 }
 
-function generateCSSReferences({
-	files = [],
-	publicPath = '',
-	attributes = {},
-}) {
-	attributes = generateAttributes(attributes);
+function generateCSSReferences({ files = [], publicPath, attributes = {} }) {
+	const allAttributes = {
+		...attributes,
+		rel: 'rel' in attributes ? attributes.rel : 'stylesheet',
+	};
+
+	attributes = generateAttributes(allAttributes);
 
 	return files
-		.map(
-			file => `<link href="${publicPath}${file}" rel="stylesheet"${attributes}>`
-		)
+		.map(file => `<link href="${publicPath}${file}"${attributes}>`)
 		.join('');
 }
 
@@ -147,7 +146,14 @@ function generateAttributes(attributes = {}) {
 
 	return (
 		' ' +
-		attributes.map(attribute => `${attribute[0]}="${attribute[1]}"`).join(' ')
+		attributes
+			.map(attr => {
+				if (attr[1] === true) {
+					return attr[0];
+				}
+				return `${attr[0]}="${attr[1]}"`;
+			})
+			.join(' ')
 	);
 }
 
