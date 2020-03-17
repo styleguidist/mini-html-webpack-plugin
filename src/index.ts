@@ -1,13 +1,35 @@
-const path = require('path');
-const { RawSource } = require('webpack-sources');
+import path from 'path';
+import { RawSource } from 'webpack-sources';
 
-class MiniHtmlWebpackPlugin {
-	constructor(options = {}) {
-		this.options = options;
+/* eslint-disable-next-line no-unused-vars */
+import webpack from 'webpack';
+
+type Context = {
+	title?: string;
+	htmlAttributes?: object;
+	cssAttributes?: object;
+	jsAttributes?: object;
+};
+
+type Options = {
+	filename?: string;
+	publicPath?: string;
+	context?: Context;
+	template?: (
+		args: Context | { css: string; js: string; publicPath: string }
+	) => string | Promise<string>;
+	chunks?: string[];
+};
+
+class MiniHtmlWebpackPlugin implements webpack.Plugin {
+	options: Options;
+
+	constructor(options: Options) {
+		this.options = options || {};
 		this.plugin = this.plugin.bind(this);
 	}
 
-	plugin(compilation, callback) {
+	plugin(compilation: webpack.compilation.Compilation, callback: () => {}) {
 		const {
 			filename = 'index.html',
 			publicPath = '',
@@ -29,7 +51,7 @@ class MiniHtmlWebpackPlugin {
 		});
 	}
 
-	apply(compiler) {
+	apply(compiler: webpack.Compiler) {
 		if (compiler.hooks) {
 			// Webpack 4
 			compiler.hooks.emit.tapAsync('MiniHtmlWebpackPlugin', this.plugin);
@@ -40,15 +62,20 @@ class MiniHtmlWebpackPlugin {
 	}
 }
 
-function getFiles(entrypoints, chunks) {
-	const ret = {};
+type Files = { [id: string]: string[] };
+
+function getFiles(
+	entrypoints: webpack.compilation.Compilation['entrypoints'],
+	chunks?: webpack.compilation.Compilation['chunks']
+): Files {
+	const ret: Files = {};
 
 	entrypoints.forEach(entry => {
 		if (chunks && !chunks.includes(entry.name)) {
 			return;
 		}
 
-		entry.getFiles().forEach(file => {
+		entry.getFiles().forEach((file: string) => {
 			const extension = path.extname(file).replace(/\./, '');
 
 			if (!ret[extension]) {
@@ -62,7 +89,7 @@ function getFiles(entrypoints, chunks) {
 	return ret;
 }
 
-function normalizeEntrypoints(entrypoints) {
+function normalizeEntrypoints(entrypoints: any) {
 	// Webpack 4
 	if (entrypoints.forEach) {
 		return entrypoints;
@@ -73,8 +100,8 @@ function normalizeEntrypoints(entrypoints) {
 }
 
 function defaultTemplate({
-	css,
-	js,
+	css = [],
+	js = [],
 	publicPath = '',
 	title = '',
 	htmlAttributes = {
@@ -112,16 +139,25 @@ function defaultTemplate({
   </html>`;
 }
 
-function generateCSSReferences({ files = [], publicPath, attributes = {} }) {
+function generateCSSReferences({
+	files = [],
+	publicPath = '',
+	attributes = {},
+}: {
+	files: string[];
+	publicPath: string;
+	attributes: { rel?: string };
+}) {
 	const allAttributes = {
 		...attributes,
 		rel: 'rel' in attributes ? attributes.rel : 'stylesheet',
 	};
 
-	attributes = generateAttributes(allAttributes);
-
 	return files
-		.map(file => `<link href="${publicPath}${file}"${attributes}>`)
+		.map(
+			file =>
+				`<link href="${publicPath}${file}"${generateAttributes(allAttributes)}>`
+		)
 		.join('');
 }
 
@@ -138,15 +174,15 @@ function generateJSReferences({
 }
 
 function generateAttributes(attributes = {}) {
-	attributes = Object.entries(attributes);
+	const stringAttributes = Object.entries(attributes);
 
-	if (attributes.length === 0) {
+	if (stringAttributes.length === 0) {
 		return '';
 	}
 
 	return (
 		' ' +
-		attributes
+		stringAttributes
 			.map(attr => {
 				if (attr[1] === true) {
 					return attr[0];
@@ -157,8 +193,10 @@ function generateAttributes(attributes = {}) {
 	);
 }
 
-module.exports = MiniHtmlWebpackPlugin;
-module.exports.defaultTemplate = defaultTemplate;
-module.exports.generateAttributes = generateAttributes;
-module.exports.generateCSSReferences = generateCSSReferences;
-module.exports.generateJSReferences = generateJSReferences;
+export {
+	MiniHtmlWebpackPlugin as default,
+	defaultTemplate,
+	generateAttributes,
+	generateCSSReferences,
+	generateJSReferences,
+};
