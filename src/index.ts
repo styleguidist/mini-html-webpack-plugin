@@ -21,47 +21,6 @@ type Options = {
 	chunks?: string[];
 };
 
-class MiniHtmlWebpackPlugin implements webpack.Plugin {
-	options: Options;
-
-	constructor(options: Options) {
-		this.options = options || {};
-		this.plugin = this.plugin.bind(this);
-	}
-
-	plugin(compilation: webpack.compilation.Compilation, callback: () => {}) {
-		const {
-			filename = 'index.html',
-			publicPath = '',
-			template,
-			context,
-			chunks,
-		} = this.options;
-
-		const files = getFiles(
-			normalizeEntrypoints(compilation.entrypoints),
-			chunks
-		);
-
-		const options = Object.assign({}, { publicPath }, context, files);
-
-		Promise.resolve((template || defaultTemplate)(options)).then(source => {
-			compilation.assets[filename] = new RawSource(source);
-			callback();
-		});
-	}
-
-	apply(compiler: webpack.Compiler) {
-		if (compiler.hooks) {
-			// Webpack 4
-			compiler.hooks.emit.tapAsync('MiniHtmlWebpackPlugin', this.plugin);
-		} else {
-			// Webpack 3
-			compiler.plugin('emit', this.plugin);
-		}
-	}
-}
-
 type Files = { [id: string]: string[] };
 
 function getFiles(
@@ -97,6 +56,60 @@ function normalizeEntrypoints(entrypoints: any) {
 
 	// Webpack 3
 	return Object.keys(entrypoints).map(name => entrypoints[name]);
+}
+
+function generateAttributes(attributes = {}) {
+	const stringAttributes = Object.entries(attributes);
+
+	if (stringAttributes.length === 0) {
+		return '';
+	}
+
+	return (
+		' ' +
+		stringAttributes
+			.map(attr => {
+				if (attr[1] === true) {
+					return attr[0];
+				}
+				return `${attr[0]}="${attr[1]}"`;
+			})
+			.join(' ')
+	);
+}
+
+function generateCSSReferences({
+	files = [],
+	publicPath = '',
+	attributes = {},
+}: {
+	files: string[];
+	publicPath: string;
+	attributes: { rel?: string };
+}) {
+	const allAttributes = {
+		...attributes,
+		rel: 'rel' in attributes ? attributes.rel : 'stylesheet',
+	};
+
+	return files
+		.map(
+			file =>
+				`<link href="${publicPath}${file}"${generateAttributes(allAttributes)}>`
+		)
+		.join('');
+}
+
+function generateJSReferences({
+	files = [],
+	publicPath = '',
+	attributes = {},
+}) {
+	attributes = generateAttributes(attributes);
+
+	return files
+		.map(file => `<script src="${publicPath}${file}"${attributes}></script>`)
+		.join('');
 }
 
 function defaultTemplate({
@@ -139,58 +152,48 @@ function defaultTemplate({
   </html>`;
 }
 
-function generateCSSReferences({
-	files = [],
-	publicPath = '',
-	attributes = {},
-}: {
-	files: string[];
-	publicPath: string;
-	attributes: { rel?: string };
-}) {
-	const allAttributes = {
-		...attributes,
-		rel: 'rel' in attributes ? attributes.rel : 'stylesheet',
-	};
+class MiniHtmlWebpackPlugin implements webpack.Plugin {
+	private options: Options;
 
-	return files
-		.map(
-			file =>
-				`<link href="${publicPath}${file}"${generateAttributes(allAttributes)}>`
-		)
-		.join('');
-}
-
-function generateJSReferences({
-	files = [],
-	publicPath = '',
-	attributes = {},
-}) {
-	attributes = generateAttributes(attributes);
-
-	return files
-		.map(file => `<script src="${publicPath}${file}"${attributes}></script>`)
-		.join('');
-}
-
-function generateAttributes(attributes = {}) {
-	const stringAttributes = Object.entries(attributes);
-
-	if (stringAttributes.length === 0) {
-		return '';
+	public constructor(options: Options) {
+		this.options = options || {};
+		this.plugin = this.plugin.bind(this);
 	}
 
-	return (
-		' ' +
-		stringAttributes
-			.map(attr => {
-				if (attr[1] === true) {
-					return attr[0];
-				}
-				return `${attr[0]}="${attr[1]}"`;
-			})
-			.join(' ')
-	);
+	private plugin(
+		compilation: webpack.compilation.Compilation,
+		callback: () => {}
+	) {
+		const {
+			filename = 'index.html',
+			publicPath = '',
+			template,
+			context,
+			chunks,
+		} = this.options;
+
+		const files = getFiles(
+			normalizeEntrypoints(compilation.entrypoints),
+			chunks
+		);
+
+		const options = Object.assign({}, { publicPath }, context, files);
+
+		Promise.resolve((template || defaultTemplate)(options)).then(source => {
+			compilation.assets[filename] = new RawSource(source);
+			callback();
+		});
+	}
+
+	public apply(compiler: webpack.Compiler) {
+		if (compiler.hooks) {
+			// Webpack 4
+			compiler.hooks.emit.tapAsync('MiniHtmlWebpackPlugin', this.plugin);
+		} else {
+			// Webpack 3
+			compiler.plugin('emit', this.plugin);
+		}
+	}
 }
 
 export {

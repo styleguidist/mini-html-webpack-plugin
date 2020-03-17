@@ -1,4 +1,3 @@
 {
-	"extends": "tamia",
-	"parser": "@typescript-eslint/parser"
+	"extends": "tamia/typescript"
 }
