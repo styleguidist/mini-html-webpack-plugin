@@ -5,7 +5,7 @@ import compiler from '@webpack-contrib/test-utils';
 const getConfig = (options: {}, config: { title?: string } = {}) =>
 	Object.assign(
 		{
-			entry: ['./test/main.js'],
+			entry: ['./main.js'],
 			module: {
 				rules: [
 					{
