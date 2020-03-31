@@ -1,7 +1,6 @@
 import path from 'path';
 import { RawSource } from 'webpack-sources';
 
-/* eslint-disable-next-line no-unused-vars */
 import webpack from 'webpack';
 
 type Context = {
