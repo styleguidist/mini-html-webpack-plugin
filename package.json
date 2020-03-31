@@ -39,7 +39,7 @@
 	"homepage": "https://github.com/styleguidist/mini-html-webpack-plugin",
 	"repository": "styleguidist/mini-html-webpack-plugin",
 	"engines": {
-		"node": ">=8.12"
+		"node": ">=10"
 	},
 	"devDependencies": {
 		"@types/jest": "^25.1.4",
@@ -61,10 +61,10 @@
 		"ts-jest": "^25.3.0",
 		"typescript": "^3.8.3",
 		"webpack": "^4.42.1"
-  },
-  "peerDependencies": {
-    "webpack": ">=4"
-  },
+	},
+	"peerDependencies": {
+		"webpack": ">=4"
+	},
 	"lint-staged": {
 		"*.{ts,md}": [
 			"prettier --write",
