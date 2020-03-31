@@ -16,7 +16,7 @@
 		"posttest": "npm run format",
 		"lint": "eslint **/*.ts --cache --fix --ignore-path .gitignore",
 		"format": "prettier --write \"**/*.{ts,md}\"",
-		"test:jest": "jest --detectOpenHandles",
+		"test:jest": "jest",
 		"test:watch": "jest --watch",
 		"test:coverage": "jest --coverage"
 	},
