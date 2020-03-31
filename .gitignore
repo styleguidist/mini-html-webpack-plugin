@@ -10,3 +10,4 @@ yarn.lock
 .eslintcache
 coverage/
 Changelog.md
+dist/

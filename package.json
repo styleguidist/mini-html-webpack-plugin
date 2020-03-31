@@ -1,67 +1,83 @@
 {
-  "name": "mini-html-webpack-plugin",
-  "version": "0.0.0-development",
-  "description": "A miniature version of html-webpack-plugin with only necessary features",
-  "main": "index.js",
-  "files": [
-    "index.js"
-  ],
-  "scripts": {
-    "pretest": "npm run lint",
-    "test": "true && npm run test:jest",
-    "posttest": "npm run format",
-    "lint": "eslint . --cache --fix",
-    "format": "prettier --write \"**/*.{js,md}\"",
-    "test:jest": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
-  },
-  "keywords": [
-    "webpack",
-    "html",
-    "template"
-  ],
-  "author": "Juho Vepsalainen",
-  "contributors": [
-    {
-      "name": "Artem Sapegin",
-      "url": "http://sapegin.me"
-    }
-  ],
-  "license": "MIT",
-  "dependencies": {
-    "webpack-sources": "^1.3.0"
-  },
-  "homepage": "https://github.com/styleguidist/mini-html-webpack-plugin",
-  "repository": "styleguidist/mini-html-webpack-plugin",
-  "engines": {
-    "node": ">=8.12"
-  },
-  "devDependencies": {
-    "@webpack-contrib/test-utils": "^0.1.3",
-    "css-loader": "^3.4.2",
-    "eslint": "^5.16.0",
-    "eslint-config-tamia": "^6.0.2",
-    "husky": "^2.3.0",
-    "jest": "^24.8.0",
-    "lint-staged": "^8.1.7",
-    "mini-css-extract-plugin": "^0.9.0",
-    "prettier": "^1.17.1",
-    "webpack": "^4.31.0"
-  },
-  "lint-staged": {
-    "*.{js,md}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  }
+	"name": "mini-html-webpack-plugin",
+	"version": "0.0.0-development",
+	"description": "A miniature version of html-webpack-plugin with only necessary features",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist/index.js",
+		"dist/index.d.ts"
+	],
+	"scripts": {
+		"build": "rimraf ./dist && tsc",
+		"watch": "tsc --watch",
+		"pretest": "npm run lint",
+		"test": "npm run test:jest",
+		"posttest": "npm run format",
+		"lint": "eslint **/*.ts --cache --fix --ignore-path .gitignore",
+		"format": "prettier --write \"**/*.{ts,md}\"",
+		"test:jest": "jest",
+		"test:watch": "jest --watch",
+		"test:coverage": "jest --coverage"
+	},
+	"keywords": [
+		"webpack",
+		"html",
+		"template"
+	],
+	"author": "Juho Vepsalainen",
+	"contributors": [
+		{
+			"name": "Artem Sapegin",
+			"url": "http://sapegin.me"
+		}
+	],
+	"license": "MIT",
+	"dependencies": {
+		"webpack-sources": "^1.4.3"
+	},
+	"homepage": "https://github.com/styleguidist/mini-html-webpack-plugin",
+	"repository": "styleguidist/mini-html-webpack-plugin",
+	"engines": {
+		"node": ">=10"
+	},
+	"devDependencies": {
+		"@types/jest": "^25.1.4",
+		"@types/mini-css-extract-plugin": "^0.9.1",
+		"@types/webpack": "^4.41.10",
+		"@types/webpack-sources": "^0.1.7",
+		"@typescript-eslint/eslint-plugin": "^2.26.0",
+		"@typescript-eslint/parser": "^2.26.0",
+		"@webpack-contrib/test-utils": "^0.1.3",
+		"css-loader": "^3.4.2",
+		"eslint": "^6.8.0",
+		"eslint-config-tamia": "^7.1.2",
+		"husky": "^4.2.3",
+		"jest": "^25.2.4",
+		"lint-staged": "^10.1.0",
+		"mini-css-extract-plugin": "^0.9.0",
+		"prettier": "^2.0.2",
+		"rimraf": "^3.0.2",
+		"ts-jest": "^25.3.0",
+		"typescript": "^3.8.3",
+		"webpack": "^4.42.1"
+	},
+	"peerDependencies": {
+		"webpack": ">=4"
+	},
+	"lint-staged": {
+		"*.{ts,md}": [
+			"prettier --write",
+			"git add"
+		],
+		"*.ts": [
+			"eslint --fix",
+			"git add"
+		]
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	}
 }
