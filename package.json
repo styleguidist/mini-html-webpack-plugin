@@ -12,7 +12,7 @@
 		"build": "rimraf ./dist && tsc",
 		"watch": "tsc --watch",
 		"pretest": "npm run lint",
-		"test": "true && npm run test:jest",
+		"test": "npm run test:jest",
 		"posttest": "npm run format",
 		"lint": "eslint **/*.ts --cache --fix --ignore-path .gitignore",
 		"format": "prettier --write \"**/*.{ts,md}\"",
