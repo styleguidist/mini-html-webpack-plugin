@@ -7,8 +7,7 @@ node_js:
   - 11
   - 12
 after_success:
-  - npm install --no-save semantic-release-tamia
-  - npx semantic-release --analyze-commits semantic-release-tamia/analyzeCommits --verify-release semantic-release-tamia/verifyRelease --generate-notes semantic-release-tamia/generateNotes
+  - npx semantic-release
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/
