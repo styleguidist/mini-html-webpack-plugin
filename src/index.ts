@@ -3,11 +3,13 @@ import { RawSource } from 'webpack-sources';
 
 import webpack from 'webpack';
 
+type Attributes = Record<string, any>;
+
 type Context = {
 	title?: string;
-	htmlAttributes?: object;
-	cssAttributes?: object;
-	jsAttributes?: object;
+	htmlAttributes?: Attributes;
+	cssAttributes?: Attributes;
+	jsAttributes?: Attributes;
 };
 
 type Options = {
