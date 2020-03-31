@@ -29,7 +29,7 @@ function getFiles(
 ): Files {
 	const ret: Files = {};
 
-	entrypoints.forEach(entry => {
+	entrypoints.forEach((entry) => {
 		if (chunks && !chunks.includes(entry.name)) {
 			return;
 		}
@@ -55,7 +55,7 @@ function normalizeEntrypoints(entrypoints: any) {
 	}
 
 	// Webpack 3
-	return Object.keys(entrypoints).map(name => entrypoints[name]);
+	return Object.keys(entrypoints).map((name) => entrypoints[name]);
 }
 
 function generateAttributes(attributes = {}) {
@@ -68,7 +68,7 @@ function generateAttributes(attributes = {}) {
 	return (
 		' ' +
 		stringAttributes
-			.map(attr => {
+			.map((attr) => {
 				if (attr[1] === true) {
 					return attr[0];
 				}
@@ -94,7 +94,7 @@ function generateCSSReferences({
 
 	return files
 		.map(
-			file =>
+			(file) =>
 				`<link href="${publicPath}${file}"${generateAttributes(allAttributes)}>`
 		)
 		.join('');
@@ -108,7 +108,7 @@ function generateJSReferences({
 	attributes = generateAttributes(attributes);
 
 	return files
-		.map(file => `<script src="${publicPath}${file}"${attributes}></script>`)
+		.map((file) => `<script src="${publicPath}${file}"${attributes}></script>`)
 		.join('');
 }
 
@@ -179,7 +179,7 @@ class MiniHtmlWebpackPlugin implements webpack.Plugin {
 
 		const options = Object.assign({}, { publicPath }, context, files);
 
-		Promise.resolve((template || defaultTemplate)(options)).then(source => {
+		Promise.resolve((template || defaultTemplate)(options)).then((source) => {
 			compilation.assets[filename] = new RawSource(source);
 			callback();
 		});

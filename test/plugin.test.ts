@@ -118,7 +118,7 @@ test('custom async template', async () => {
 			context: { title: 'Pizza' },
 			template: ({ title }: { title: string }) => {
 				const delay = (ms: number) =>
-					new Promise(resolve => setTimeout(resolve, ms));
+					new Promise((resolve) => setTimeout(resolve, ms));
 				return delay(50).then(() => `<div>${title}</div>`);
 			},
 		})

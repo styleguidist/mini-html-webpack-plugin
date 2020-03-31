@@ -89,7 +89,7 @@ const config = {
       context: {
         title: 'Minification demo'
       },
-      template: context =>
+      template: (context) =>
         minify(MiniHtmlWebpackPlugin.defaultTemplate(context))
     })
   ]
