@@ -49,16 +49,6 @@ function getFiles(
 	return ret;
 }
 
-function normalizeEntrypoints(entrypoints: any) {
-	// Webpack 4
-	if (entrypoints.forEach) {
-		return entrypoints;
-	}
-
-	// Webpack 3
-	return Object.keys(entrypoints).map((name) => entrypoints[name]);
-}
-
 function generateAttributes(attributes = {}) {
 	const stringAttributes = Object.entries(attributes);
 
@@ -173,10 +163,7 @@ class MiniHtmlWebpackPlugin implements webpack.Plugin {
 			chunks,
 		} = this.options;
 
-		const files = getFiles(
-			normalizeEntrypoints(compilation.entrypoints),
-			chunks
-		);
+		const files = getFiles(compilation.entrypoints, chunks);
 
 		const options = Object.assign({}, { publicPath }, context, files);
 
@@ -187,13 +174,7 @@ class MiniHtmlWebpackPlugin implements webpack.Plugin {
 	}
 
 	public apply(compiler: webpack.Compiler) {
-		if (compiler.hooks) {
-			// Webpack 4
-			compiler.hooks.emit.tapAsync('MiniHtmlWebpackPlugin', this.plugin);
-		} else {
-			// Webpack 3
-			compiler.plugin('emit', this.plugin);
-		}
+		compiler.hooks.emit.tapAsync('MiniHtmlWebpackPlugin', this.plugin);
 	}
 }
 

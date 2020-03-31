@@ -61,7 +61,10 @@
 		"ts-jest": "^25.3.0",
 		"typescript": "^3.8.3",
 		"webpack": "^4.42.1"
-	},
+  },
+  "peerDependencies": {
+    "webpack": ">=4"
+  },
 	"lint-staged": {
 		"*.{ts,md}": [
 			"prettier --write",
