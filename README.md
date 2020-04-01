@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/mini-html-webpack-plugin.svg)](https://www.npmjs.com/package/mini-html-webpack-plugin) [![Build Status](https://travis-ci.org/styleguidist/mini-html-webpack-plugin.svg)](https://travis-ci.org/styleguidist/mini-html-webpack-plugin)
 
-The plugin writes CSS and JS asset paths for you automatically. Works with webpack 3 and 4.
+The plugin writes CSS and JS asset paths for you automatically. It works with webpack 4 or higher.
 
 **It does not work with html-webpack-plugin plugins!**
 
