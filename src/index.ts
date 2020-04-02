@@ -179,7 +179,7 @@ class MiniHtmlWebpackPlugin implements webpack.Plugin {
 }
 
 export {
-	MiniHtmlWebpackPlugin as default,
+	MiniHtmlWebpackPlugin,
 	defaultTemplate,
 	generateAttributes,
 	generateCSSReferences,

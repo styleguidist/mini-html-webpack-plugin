@@ -13,7 +13,7 @@ npm install mini-html-webpack-plugin
 ```
 
 ```javascript
-const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
+const { MiniHtmlWebpackPlugin } = require('mini-html-webpack-plugin');
 
 const config = {
   plugins: [
@@ -57,7 +57,7 @@ It's possible to use `MiniHtmlWebpackPlugin` to develop sites with multiple page
 To achieve this, you'll have to define `entry` against each the code for each page and define `MiniHtmlWebpackPlugin` to match them. In practice you might want to abstract this pairing but to give you the full idea, consider the example below.
 
 ```javascript
-const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
+const { MiniHtmlWebpackPlugin } = require('mini-html-webpack-plugin');
 
 const config = {
   entry: {
@@ -81,7 +81,7 @@ const config = {
 
 ```javascript
 const minify = require('html-minifier').minify;
-const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
+const { MiniHtmlWebpackPlugin } = require('mini-html-webpack-plugin');
 
 const config = {
   plugins: [
@@ -105,12 +105,12 @@ Or define a template function to generate your own code.
 The template function may return a string or a `Promise` resolving to a string.
 
 ```js
-const MiniHtmlWebpackPlugin = require('mini-html-webpack-plugin');
 const {
+  MiniHtmlWebpackPlugin,
   generateAttributes,
   generateCSSReferences,
   generateJSReferences
-} = MiniHtmlWebpackPlugin;
+} = require('mini-html-webpack-plugin');
 
 const config = {
   plugins: [
