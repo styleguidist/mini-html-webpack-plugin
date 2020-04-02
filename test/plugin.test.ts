@@ -1,5 +1,5 @@
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import MiniHtmlWebpackPlugin from '../src';
+import { MiniHtmlWebpackPlugin } from '../src';
 import compiler from '@webpack-contrib/test-utils';
 
 const getConfig = (options: {}, config: { title?: string } = {}) =>
