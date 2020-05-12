@@ -102,8 +102,12 @@ function generateJSReferences({
 }: {
 	files: string[];
 	publicPath: string;
-	attributes: Attributes;
+	attributes: Attributes | undefined;
 }): string {
+	if (!attributes) {
+		return '';
+	}
+
 	return files
 		.map(
 			(file) =>
