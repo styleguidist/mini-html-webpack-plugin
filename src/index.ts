@@ -17,7 +17,7 @@ type Options = {
 	publicPath?: string;
 	context?: Context;
 	template?: (
-		args: Context | { css: string; js: string; publicPath: string }
+		args: Context & Files & { publicPath: string }
 	) => string | Promise<string>;
 	chunks?: string[];
 };
@@ -76,8 +76,12 @@ function generateCSSReferences({
 }: {
 	files: string[];
 	publicPath: string;
-	attributes: { rel?: string };
-}) {
+	attributes: (Attributes & { rel?: string }) | undefined;
+}): string {
+	if (!attributes) {
+		return '';
+	}
+
 	const allAttributes = {
 		...attributes,
 		rel: 'rel' in attributes ? attributes.rel : 'stylesheet',
@@ -95,11 +99,18 @@ function generateJSReferences({
 	files = [],
 	publicPath = '',
 	attributes = {},
-}) {
-	attributes = generateAttributes(attributes);
-
+}: {
+	files: string[];
+	publicPath: string;
+	attributes: Attributes;
+}): string {
 	return files
-		.map((file) => `<script src="${publicPath}${file}"${attributes}></script>`)
+		.map(
+			(file) =>
+				`<script src="${publicPath}${file}"${generateAttributes(
+					attributes
+				)}></script>`
+		)
 		.join('');
 }
 
