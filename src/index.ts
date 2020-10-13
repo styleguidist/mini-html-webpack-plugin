@@ -1,7 +1,6 @@
 import path from 'path';
-import { RawSource } from 'webpack-sources';
 
-import webpack from 'webpack';
+import webpack, { Compilation } from 'webpack';
 
 type Attributes = Record<string, any>;
 
@@ -25,8 +24,8 @@ type Options = {
 type Files = { [id: string]: string[] };
 
 function getFiles(
-	entrypoints: webpack.compilation.Compilation['entrypoints'],
-	chunks?: webpack.compilation.Compilation['chunks']
+	entrypoints: Compilation['entrypoints'],
+	chunks?: string[]
 ): Files {
 	const ret: Files = {};
 
@@ -130,7 +129,13 @@ function defaultTemplate({
 	body = '',
 	cssAttributes = {},
 	jsAttributes = {},
-}) {
+}: {
+	css?: string[];
+	js?: string[];
+	publicPath?: string;
+	head?: string;
+	body?: string;
+} & Context) {
 	const htmlAttrs = generateAttributes(htmlAttributes);
 
 	const cssTags = generateCSSReferences({
@@ -158,18 +163,20 @@ function defaultTemplate({
   </html>`;
 }
 
-class MiniHtmlWebpackPlugin implements webpack.Plugin {
+function isWebpack4() {
+	return webpack.version.split('.')[0] === '4';
+}
+
+class MiniHtmlWebpackPlugin {
 	private options: Options;
 
 	public constructor(options: Options) {
 		this.options = options || {};
-		this.plugin = this.plugin.bind(this);
+		this.webpack4plugin = this.webpack4plugin.bind(this);
+		this.webpack5plugin = this.webpack5plugin.bind(this);
 	}
 
-	private plugin(
-		compilation: webpack.compilation.Compilation,
-		callback: () => {}
-	) {
+	private webpack4plugin(compilation: Compilation, callback: () => {}) {
 		const {
 			filename = 'index.html',
 			publicPath = '',
@@ -177,19 +184,58 @@ class MiniHtmlWebpackPlugin implements webpack.Plugin {
 			context,
 			chunks,
 		} = this.options;
-
 		const files = getFiles(compilation.entrypoints, chunks);
-
 		const options = Object.assign({}, { publicPath }, context, files);
 
 		Promise.resolve((template || defaultTemplate)(options)).then((source) => {
-			compilation.assets[filename] = new RawSource(source);
+			// eslint-disable-next-line
+			const sources = require('webpack-sources');
+
+			compilation.assets[filename] = new sources.RawSource(source, true);
 			callback();
 		});
 	}
 
+	private webpack5plugin(compilation: Compilation) {
+		const {
+			filename = 'index.html',
+			publicPath = '',
+			template,
+			context,
+			chunks,
+		} = this.options;
+		const files = getFiles(compilation.entrypoints, chunks);
+		const options = Object.assign({}, { publicPath }, context, files);
+
+		return Promise.resolve((template || defaultTemplate)(options)).then(
+			(source) => {
+				// webpacks 5 exports `webpack-sources` to avoid cache problems
+				// eslint-disable-next-line
+				const { sources } = require('webpack');
+
+				compilation.emitAsset(filename, new sources.RawSource(source, true));
+			}
+		);
+	}
+
 	public apply(compiler: webpack.Compiler) {
-		compiler.hooks.emit.tapAsync('MiniHtmlWebpackPlugin', this.plugin);
+		const pluginName = 'MiniHtmlWebpackPlugin';
+
+		if (isWebpack4()) {
+			// @ts-ignore: Ignore for webpack 4 due to different typing
+			compiler.hooks.emit.tapAsync(pluginName, this.webpack4plugin);
+		} else {
+			compiler.hooks.compilation.tap(pluginName, (compilation) => {
+				compilation.hooks.processAssets.tapPromise(
+					{
+						name: pluginName,
+						// https://github.com/webpack/webpack/blob/master/lib/Compilation.js#L3280
+						stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+					},
+					() => this.webpack5plugin(compilation)
+				);
+			});
+		}
 	}
 }
 

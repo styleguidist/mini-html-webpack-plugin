@@ -1,5 +1,7 @@
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { MiniHtmlWebpackPlugin } from '../src';
+
+// TODO: Replace compiler with webpack itself
 import compiler from '@webpack-contrib/test-utils';
 
 const getConfig = (options: {}, config: { title?: string } = {}) =>

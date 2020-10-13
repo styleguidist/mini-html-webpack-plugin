@@ -35,7 +35,7 @@
 	],
 	"license": "MIT",
 	"dependencies": {
-		"webpack-sources": "^1.4.3"
+		"webpack-sources": "^2.0.1"
 	},
 	"homepage": "https://github.com/styleguidist/mini-html-webpack-plugin",
 	"repository": "styleguidist/mini-html-webpack-plugin",
@@ -45,7 +45,7 @@
 	"devDependencies": {
 		"@types/jest": "^25.1.4",
 		"@types/mini-css-extract-plugin": "^0.9.1",
-		"@types/webpack": "^4.41.10",
+		"@types/webpack": "^4.41.22",
 		"@types/webpack-sources": "^0.1.7",
 		"@typescript-eslint/eslint-plugin": "^2.26.0",
 		"@typescript-eslint/parser": "^2.26.0",
@@ -54,14 +54,14 @@
 		"eslint": "^6.8.0",
 		"eslint-config-tamia": "^7.1.2",
 		"husky": "^4.2.3",
-		"jest": "^25.2.4",
+		"jest": "^26.5.3",
 		"lint-staged": "^10.1.0",
 		"mini-css-extract-plugin": "^0.9.0",
-		"prettier": "^2.0.2",
+		"prettier": "^2.1.2",
 		"rimraf": "^3.0.2",
-		"ts-jest": "^25.3.0",
+		"ts-jest": "^26.4.1",
 		"typescript": "^3.8.3",
-		"webpack": "^4.42.1"
+		"webpack": "^5.1.0"
 	},
 	"peerDependencies": {
 		"webpack": ">=4"
