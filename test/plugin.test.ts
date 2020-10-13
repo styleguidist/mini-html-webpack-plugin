@@ -1,13 +1,33 @@
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import webpack, { Configuration } from 'webpack';
 import { MiniHtmlWebpackPlugin } from '../src';
 
-// TODO: Replace compiler with webpack itself
-import compiler from '@webpack-contrib/test-utils';
+function compiler(config: Configuration) {
+	return new Promise((resolve, reject) =>
+		webpack(config, (err, stats) => {
+			if (err) {
+				return reject(err);
+			}
 
-const getConfig = (options: {}, config: { title?: string } = {}) =>
+			if (stats.hasErrors()) {
+				return reject(stats.toString('errors-only'));
+			}
+
+			return resolve();
+		})
+	);
+}
+
+// TODO: Extract results for testing
+// https://survivejs.com/webpack/developing/composing-configuration/#guidelines-for-building-your-own-configuration-packages
+const getConfig = (
+	options: {},
+	config: { title?: string } = {}
+): Configuration =>
+	// @ts-ignore: It looks like there's a type problem in MiniCssExtractPlugin
 	Object.assign(
 		{
-			entry: ['./main.js'],
+			entry: { main: './main.js' },
 			module: {
 				rules: [
 					{
@@ -25,31 +45,28 @@ const getConfig = (options: {}, config: { title?: string } = {}) =>
 	);
 
 test('default options', async () => {
-	const result = await compiler({}, getConfig({}));
+	const result = await compiler(getConfig({}));
 
 	expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
 });
 
 test('custom chunks', async () => {
-	const result = await compiler(
-		{},
-		{
-			entry: {
-				index: './index.js',
-				another: './another.js',
-			},
-			plugins: [
-				new MiniHtmlWebpackPlugin({
-					filename: 'index.html',
-					chunks: ['index'],
-				}),
-				new MiniHtmlWebpackPlugin({
-					filename: 'another.html',
-					chunks: ['another'],
-				}),
-			],
-		}
-	);
+	const result = await compiler({
+		entry: {
+			index: './index.js',
+			another: './another.js',
+		},
+		plugins: [
+			new MiniHtmlWebpackPlugin({
+				filename: 'index.html',
+				chunks: ['index'],
+			}),
+			new MiniHtmlWebpackPlugin({
+				filename: 'another.html',
+				chunks: ['another'],
+			}),
+		],
+	});
 
 	// This should contain only reference to the index chunk and the related
 	// runtime.
@@ -62,7 +79,6 @@ test('custom chunks', async () => {
 
 test('custom title', async () => {
 	const result = await compiler(
-		{},
 		getConfig({ context: { title: 'Pizza' } })
 	).then();
 
@@ -71,7 +87,6 @@ test('custom title', async () => {
 
 test('custom lang', async () => {
 	const result = await compiler(
-		{},
 		getConfig({ context: { htmlAttributes: { lang: 'ru' } } })
 	);
 
@@ -80,7 +95,6 @@ test('custom lang', async () => {
 
 test('additional head', async () => {
 	const result = await compiler(
-		{},
 		getConfig({
 			context: {
 				head:
@@ -94,7 +108,6 @@ test('additional head', async () => {
 
 test('additional body', async () => {
 	const result = await compiler(
-		{},
 		getConfig({ context: { body: '<div>Demo</div>' } })
 	);
 
@@ -103,7 +116,6 @@ test('additional body', async () => {
 
 test('custom template', async () => {
 	const result = await compiler(
-		{},
 		getConfig({
 			context: { title: 'Pizza', htmlAttributes: { lang: 'it' } },
 			template: ({ title }: { title: string }) => `<div>${title}</div>`,
@@ -115,7 +127,6 @@ test('custom template', async () => {
 
 test('custom async template', async () => {
 	const result = await compiler(
-		{},
 		getConfig({
 			context: { title: 'Pizza' },
 			template: ({ title }: { title: string }) => {
@@ -131,20 +142,19 @@ test('custom async template', async () => {
 
 test('custom filename', async () => {
 	const filename = 'pizza.html';
-	const result = await compiler({}, getConfig({ filename }));
+	const result = await compiler(getConfig({ filename }));
 
 	expect(result.compilation.assets[filename]._value).toMatchSnapshot();
 });
 
 test('custom publicPath', async () => {
-	const result = await compiler({}, getConfig({ publicPath: 'pizza/' }));
+	const result = await compiler(getConfig({ publicPath: 'pizza/' }));
 
 	expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
 });
 
 test('custom attributes', async () => {
 	const result = await compiler(
-		{},
 		getConfig({
 			context: {
 				cssAttributes: {

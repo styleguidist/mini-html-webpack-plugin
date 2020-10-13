@@ -1,6 +1,5 @@
 import path from 'path';
-
-import webpack, { Compilation } from 'webpack';
+import webpack, { Compilation, WebpackPluginInstance } from 'webpack';
 
 type Attributes = Record<string, any>;
 
@@ -167,7 +166,7 @@ function isWebpack4() {
 	return webpack.version.split('.')[0] === '4';
 }
 
-class MiniHtmlWebpackPlugin {
+class MiniHtmlWebpackPlugin implements WebpackPluginInstance {
 	private options: Options;
 
 	public constructor(options: Options) {
