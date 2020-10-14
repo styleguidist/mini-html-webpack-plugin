@@ -9,7 +9,7 @@ exports[`additional body 1`] = `
       
     </head>
     <body>
-      <div>Demo</div><script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
+      <div>Demo</div><script src=\\"main.js\\"></script>
     </body>
   </html>"
 `;
@@ -23,7 +23,7 @@ exports[`additional head 1`] = `
       <meta name=\\"viewport\\" content=\\"width=device-width, initial-scale=1.0\\" />
     </head>
     <body>
-      <script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
+      <script src=\\"main.js\\"></script>
     </body>
   </html>"
 `;
@@ -39,7 +39,7 @@ exports[`custom attributes 1`] = `
       
     </head>
     <body>
-      <script src=\\"runtime~main.js\\" defer></script><script src=\\"main.js\\" defer></script>
+      <script src=\\"main.js\\" defer></script>
     </body>
   </html>"
 `;
@@ -53,7 +53,7 @@ exports[`custom chunks 1`] = `
       
     </head>
     <body>
-      <script src=\\"runtime~index.js\\"></script><script src=\\"index.js\\"></script>
+      <script src=\\"index.js\\"></script>
     </body>
   </html>"
 `;
@@ -67,7 +67,7 @@ exports[`custom chunks 2`] = `
       
     </head>
     <body>
-      <script src=\\"runtime~another.js\\"></script><script src=\\"another.js\\"></script>
+      <script src=\\"another.js\\"></script>
     </body>
   </html>"
 `;
@@ -81,7 +81,7 @@ exports[`custom filename 1`] = `
       
     </head>
     <body>
-      <script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
+      <script src=\\"main.js\\"></script>
     </body>
   </html>"
 `;
@@ -95,7 +95,7 @@ exports[`custom lang 1`] = `
       
     </head>
     <body>
-      <script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
+      <script src=\\"main.js\\"></script>
     </body>
   </html>"
 `;
@@ -109,7 +109,7 @@ exports[`custom publicPath 1`] = `
       
     </head>
     <body>
-      <script src=\\"pizza/runtime~main.js\\"></script><script src=\\"pizza/main.js\\"></script>
+      <script src=\\"pizza/main.js\\"></script>
     </body>
   </html>"
 `;
@@ -125,7 +125,7 @@ exports[`custom title 1`] = `
       
     </head>
     <body>
-      <script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
+      <script src=\\"main.js\\"></script>
     </body>
   </html>"
 `;
@@ -139,7 +139,7 @@ exports[`default options 1`] = `
       
     </head>
     <body>
-      <script src=\\"runtime~main.js\\"></script><script src=\\"main.js\\"></script>
+      <script src=\\"main.js\\"></script>
     </body>
   </html>"
 `;
