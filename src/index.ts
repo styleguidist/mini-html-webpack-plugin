@@ -10,17 +10,23 @@ type Context = {
 	jsAttributes?: Attributes;
 };
 
+type Files = Record<string, string[]>;
+
+type TemplateParameters = {
+	css?: string[];
+	js?: string[];
+	body?: string;
+	head?: string;
+	publicPath: string;
+} & Context;
+
 type Options = {
 	filename?: string;
 	publicPath?: string;
 	context?: Context;
-	template?: (
-		args: Context & Files & { publicPath: string }
-	) => string | Promise<string>;
+	template?: (args: TemplateParameters) => string | Promise<string>;
 	chunks?: string[];
 };
-
-type Files = { [id: string]: string[] };
 
 function getFiles(
 	entrypoints: Compilation['entrypoints'],
@@ -128,13 +134,7 @@ function defaultTemplate({
 	body = '',
 	cssAttributes = {},
 	jsAttributes = {},
-}: {
-	css?: string[];
-	js?: string[];
-	publicPath?: string;
-	head?: string;
-	body?: string;
-} & Context) {
+}: TemplateParameters) {
 	const htmlAttrs = generateAttributes(htmlAttributes);
 
 	const cssTags = generateCSSReferences({
@@ -203,18 +203,20 @@ class MiniHtmlWebpackPlugin implements WebpackPluginInstance {
 			context,
 			chunks,
 		} = this.options;
-		const files = getFiles(compilation.entrypoints, chunks);
-		const options = { publicPath, ...context, ...files };
+		// TODO: Consider separating getFiles result to a structure as it can override other contents if file extension matches.
+		return Promise.resolve(
+			(template || defaultTemplate)({
+				publicPath,
+				...context,
+				...getFiles(compilation.entrypoints, chunks),
+			})
+		).then((source) => {
+			// webpacks 5 exports `webpack-sources` to avoid cache problems
+			// eslint-disable-next-line @typescript-eslint/no-var-requires
+			const { sources } = require('webpack');
 
-		return Promise.resolve((template || defaultTemplate)(options)).then(
-			(source) => {
-				// webpacks 5 exports `webpack-sources` to avoid cache problems
-				// eslint-disable-next-line @typescript-eslint/no-var-requires
-				const { sources } = require('webpack');
-
-				compilation.emitAsset(filename, new sources.RawSource(source, true));
-			}
-		);
+			compilation.emitAsset(filename, new sources.RawSource(source, true));
+		});
 	}
 
 	public apply(compiler: webpack.Compiler) {
