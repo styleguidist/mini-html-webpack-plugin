@@ -43,13 +43,13 @@
 		"node": ">=10"
 	},
 	"devDependencies": {
-		"@types/jest": "^25.1.4",
+		"@types/jest": "^26.0.14",
 		"@types/mini-css-extract-plugin": "^0.9.1",
 		"@types/webpack": "^4.41.22",
-		"@types/webpack-sources": "^0.1.7",
+		"@types/webpack-sources": "^2.0.0",
 		"@typescript-eslint/eslint-plugin": "^2.26.0",
 		"@typescript-eslint/parser": "^2.26.0",
-		"css-loader": "^3.4.2",
+		"css-loader": "^5.0.0",
 		"eslint": "^6.8.0",
 		"eslint-config-tamia": "^7.1.2",
 		"husky": "^4.2.3",
