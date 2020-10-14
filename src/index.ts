@@ -204,7 +204,7 @@ class MiniHtmlWebpackPlugin implements WebpackPluginInstance {
 			chunks,
 		} = this.options;
 		const files = getFiles(compilation.entrypoints, chunks);
-		const options = Object.assign({}, { publicPath }, context, files);
+		const options = { publicPath, ...context, ...files};
 
 		return Promise.resolve((template || defaultTemplate)(options)).then(
 			(source) => {
