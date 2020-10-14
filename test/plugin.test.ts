@@ -1,40 +1,62 @@
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import webpack, { Configuration } from 'webpack';
+import { createFsFromVolume, Volume } from 'memfs';
 import { MiniHtmlWebpackPlugin } from '../src';
-import compiler from '@webpack-contrib/test-utils';
 
-const getConfig = (options: {}, config: { title?: string } = {}) =>
+function compile(config: Configuration, filenames = ['index.html']) {
+	return new Promise((resolve, reject) => {
+		const compiler = webpack(config);
+
+		// @ts-ignore: There's a type mismatch but this should work based on webpack source
+		compiler.outputFileSystem = createFsFromVolume(new Volume());
+		const memfs = compiler.outputFileSystem;
+
+		compiler.run((err, stats) => {
+			if (err) {
+				return reject(err);
+			}
+
+			if (stats.hasErrors()) {
+				return reject(stats.toString('errors-only'));
+			}
+
+			const ret = {};
+
+			filenames.forEach((filename) => {
+				// @ts-ignore: The type is wrong here
+				ret[filename] = memfs.readFileSync(`./dist/${filename}`, {
+					encoding: 'utf-8',
+				});
+			});
+
+			return resolve(ret);
+		});
+	});
+}
+
+const getConfig = (
+	options: {},
+	config: { title?: string } = {}
+): Configuration =>
 	Object.assign(
 		{
-			entry: ['./main.js'],
-			module: {
-				rules: [
-					{
-						test: /\.css$/,
-						use: [
-							{ loader: MiniCssExtractPlugin.loader },
-							{ loader: 'css-loader' },
-						],
-					},
-				],
-			},
-			plugins: [new MiniCssExtractPlugin(), new MiniHtmlWebpackPlugin(options)],
+			entry: { main: './test/fixtures/index.js' },
+			plugins: [new MiniHtmlWebpackPlugin(options)],
 		},
 		config
 	);
 
 test('default options', async () => {
-	const result = await compiler({}, getConfig({}));
+	const result = await compile(getConfig({}));
 
-	expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	expect(result['index.html']).toMatchSnapshot();
 });
 
 test('custom chunks', async () => {
-	const result = await compiler(
-		{},
+	const result = await compile(
 		{
 			entry: {
-				index: './index.js',
-				another: './another.js',
+				index: './test/fixtures/index.js',
+				another: './test/fixtures/another.js',
 			},
 			plugins: [
 				new MiniHtmlWebpackPlugin({
@@ -46,39 +68,37 @@ test('custom chunks', async () => {
 					chunks: ['another'],
 				}),
 			],
-		}
+		},
+		['index.html', 'another.html']
 	);
 
 	// This should contain only reference to the index chunk and the related
 	// runtime.
-	expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	expect(result['index.html']).toMatchSnapshot();
 
 	// This should contain only reference to the another chunk and the related
 	// runtime.
-	expect(result.compilation.assets['another.html']._value).toMatchSnapshot();
+	expect(result['another.html']).toMatchSnapshot();
 });
 
 test('custom title', async () => {
-	const result = await compiler(
-		{},
+	const result = await compile(
 		getConfig({ context: { title: 'Pizza' } })
 	).then();
 
-	expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	expect(result['index.html']).toMatchSnapshot();
 });
 
 test('custom lang', async () => {
-	const result = await compiler(
-		{},
+	const result = await compile(
 		getConfig({ context: { htmlAttributes: { lang: 'ru' } } })
 	);
 
-	expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	expect(result['index.html']).toMatchSnapshot();
 });
 
 test('additional head', async () => {
-	const result = await compiler(
-		{},
+	const result = await compile(
 		getConfig({
 			context: {
 				head:
@@ -87,33 +107,30 @@ test('additional head', async () => {
 		})
 	);
 
-	expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	expect(result['index.html']).toMatchSnapshot();
 });
 
 test('additional body', async () => {
-	const result = await compiler(
-		{},
+	const result = await compile(
 		getConfig({ context: { body: '<div>Demo</div>' } })
 	);
 
-	expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	expect(result['index.html']).toMatchSnapshot();
 });
 
 test('custom template', async () => {
-	const result = await compiler(
-		{},
+	const result = await compile(
 		getConfig({
 			context: { title: 'Pizza', htmlAttributes: { lang: 'it' } },
 			template: ({ title }: { title: string }) => `<div>${title}</div>`,
 		})
 	);
 
-	expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	expect(result['index.html']).toMatchSnapshot();
 });
 
 test('custom async template', async () => {
-	const result = await compiler(
-		{},
+	const result = await compile(
 		getConfig({
 			context: { title: 'Pizza' },
 			template: ({ title }: { title: string }) => {
@@ -124,25 +141,24 @@ test('custom async template', async () => {
 		})
 	);
 
-	expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	expect(result['index.html']).toMatchSnapshot();
 });
 
 test('custom filename', async () => {
 	const filename = 'pizza.html';
-	const result = await compiler({}, getConfig({ filename }));
+	const result = await compile(getConfig({ filename }), [filename]);
 
-	expect(result.compilation.assets[filename]._value).toMatchSnapshot();
+	expect(result[filename]).toMatchSnapshot();
 });
 
 test('custom publicPath', async () => {
-	const result = await compiler({}, getConfig({ publicPath: 'pizza/' }));
+	const result = await compile(getConfig({ publicPath: 'pizza/' }));
 
-	expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	expect(result['index.html']).toMatchSnapshot();
 });
 
 test('custom attributes', async () => {
-	const result = await compiler(
-		{},
+	const result = await compile(
 		getConfig({
 			context: {
 				cssAttributes: {
@@ -156,5 +172,5 @@ test('custom attributes', async () => {
 		})
 	);
 
-	expect(result.compilation.assets['index.html']._value).toMatchSnapshot();
+	expect(result['index.html']).toMatchSnapshot();
 });
