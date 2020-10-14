@@ -1,4 +1,3 @@
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import webpack, { Configuration } from 'webpack';
 import { createFsFromVolume, Volume } from 'memfs';
 import { MiniHtmlWebpackPlugin } from '../src';
@@ -38,22 +37,10 @@ const getConfig = (
 	options: {},
 	config: { title?: string } = {}
 ): Configuration =>
-	// @ts-ignore: It looks like there's a type problem in MiniCssExtractPlugin
 	Object.assign(
 		{
 			entry: { main: './test/fixtures/index.js' },
-			module: {
-				rules: [
-					{
-						test: /\.css$/,
-						use: [
-							{ loader: MiniCssExtractPlugin.loader },
-							{ loader: 'css-loader' },
-						],
-					},
-				],
-			},
-			plugins: [new MiniCssExtractPlugin(), new MiniHtmlWebpackPlugin(options)],
+			plugins: [new MiniHtmlWebpackPlugin(options)],
 		},
 		config
 	);
