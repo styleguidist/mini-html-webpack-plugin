@@ -34,8 +34,6 @@ function compile(config: Configuration, filenames = ['index.html']) {
 	});
 }
 
-// TODO: Extract results for testing
-// https://survivejs.com/webpack/developing/composing-configuration/#guidelines-for-building-your-own-configuration-packages
 const getConfig = (
 	options: {},
 	config: { title?: string } = {}
