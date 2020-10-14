@@ -187,7 +187,7 @@ class MiniHtmlWebpackPlugin implements WebpackPluginInstance {
 		const options = Object.assign({}, { publicPath }, context, files);
 
 		Promise.resolve((template || defaultTemplate)(options)).then((source) => {
-			// eslint-disable-next-line
+			// eslint-disable-next-line @typescript-eslint/no-var-requires
 			const sources = require('webpack-sources');
 
 			compilation.assets[filename] = new sources.RawSource(source, true);
@@ -204,12 +204,12 @@ class MiniHtmlWebpackPlugin implements WebpackPluginInstance {
 			chunks,
 		} = this.options;
 		const files = getFiles(compilation.entrypoints, chunks);
-		const options = { publicPath, ...context, ...files};
+		const options = { publicPath, ...context, ...files };
 
 		return Promise.resolve((template || defaultTemplate)(options)).then(
 			(source) => {
 				// webpacks 5 exports `webpack-sources` to avoid cache problems
-				// eslint-disable-next-line
+				// eslint-disable-next-line @typescript-eslint/no-var-requires
 				const { sources } = require('webpack');
 
 				compilation.emitAsset(filename, new sources.RawSource(source, true));
