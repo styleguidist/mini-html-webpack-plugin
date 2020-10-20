@@ -150,7 +150,7 @@ exports[`mini-css-extract-plugin 1`] = `
     <head>
       <meta charset=\\"UTF-8\\">
       <title></title>
-      
+      <link href=\\"main.css\\" rel=\\"stylesheet\\">
     </head>
     <body>
       <script src=\\"main.js\\"></script>

@@ -55,7 +55,7 @@ test('default options', async () => {
 test('mini-css-extract-plugin', async () => {
 	const result = await compile({
 		mode: 'production',
-		entry: { main: './test/fixtures/index.js' },
+		entry: { main: './test/fixtures/css.js' },
 		module: {
 			rules: [
 				{
