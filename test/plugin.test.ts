@@ -66,7 +66,7 @@ test('mini-css-extract-plugin', async () => {
 		},
 		plugins: [
 			new MiniHtmlWebpackPlugin({}),
-			// @ts-ignore: MCEP TS declarations are broken
+			// @ts-ignore: MiniCssExtractPlugin types are broken
 			new MiniCssExtractPlugin({
 				filename: '[name].css',
 			}),
