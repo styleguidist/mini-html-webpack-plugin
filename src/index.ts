@@ -221,20 +221,25 @@ class MiniHtmlWebpackPlugin implements WebpackPluginInstance {
 
 	public apply(compiler: webpack.Compiler) {
 		const pluginName = 'MiniHtmlWebpackPlugin';
+		let registeredAlready = false;
 
 		if (isWebpack4()) {
 			// @ts-ignore: Ignore for webpack 4 due to different typing
 			compiler.hooks.emit.tapAsync(pluginName, this.webpack4plugin);
 		} else {
 			compiler.hooks.compilation.tap(pluginName, (compilation) => {
-				compilation.hooks.processAssets.tapPromise(
-					{
-						name: pluginName,
-						// https://github.com/webpack/webpack/blob/master/lib/Compilation.js#L3280
-						stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
-					},
-					() => this.webpack5plugin(compilation)
-				);
+				if (!registeredAlready) {
+					compilation.hooks.processAssets.tapPromise(
+						{
+							name: pluginName,
+							// https://github.com/webpack/webpack/blob/master/lib/Compilation.js#L3280
+							stage: Compilation.PROCESS_ASSETS_STAGE_ADDITIONAL,
+						},
+						() => this.webpack5plugin(compilation)
+					);
+				}
+
+				registeredAlready = true;
 			});
 		}
 	}

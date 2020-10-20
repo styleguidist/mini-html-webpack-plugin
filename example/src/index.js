@@ -1,3 +1,5 @@
+import './main.css';
+
 const component = (text = 'Hello world') => {
 	const element = document.createElement('div');
 	element.innerHTML = text;

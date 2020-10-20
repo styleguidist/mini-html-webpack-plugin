@@ -3,6 +3,8 @@
     "build": "wp"
   },
   "dependencies": {
+    "css-loader": "^5.0.0",
+    "mini-css-extract-plugin": "^1.1.0",
     "webpack-nano": "^1.1.0"
   },
   "main": "./src/index.js"

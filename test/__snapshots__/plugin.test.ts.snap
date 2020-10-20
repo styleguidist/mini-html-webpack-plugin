@@ -143,3 +143,17 @@ exports[`default options 1`] = `
     </body>
   </html>"
 `;
+
+exports[`mini-css-extract-plugin 1`] = `
+"<!DOCTYPE html>
+  <html lang=\\"en\\">
+    <head>
+      <meta charset=\\"UTF-8\\">
+      <title></title>
+      
+    </head>
+    <body>
+      <script src=\\"main.js\\"></script>
+    </body>
+  </html>"
+`;
