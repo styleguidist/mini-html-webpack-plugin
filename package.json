@@ -14,7 +14,7 @@
 		"watch": "tsc --watch",
 		"pretest": "npm run lint",
 		"test": "npm run test:jest",
-		"posttest": "npm run format",
+		"posttest": "npm run format && npm run build",
 		"lint": "eslint **/*.ts --cache --fix --ignore-path .gitignore",
 		"format": "prettier --write \"**/*.{ts,md}\"",
 		"test:jest": "jest",
@@ -44,7 +44,6 @@
 	},
 	"devDependencies": {
 		"@types/jest": "^26.0.14",
-		"@types/mini-css-extract-plugin": "^1.0.0",
 		"@types/webpack-sources": "^2.0.0",
 		"@typescript-eslint/eslint-plugin": "^2.26.0",
 		"@typescript-eslint/parser": "^2.26.0",
