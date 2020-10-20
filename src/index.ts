@@ -221,17 +221,12 @@ class MiniHtmlWebpackPlugin implements WebpackPluginInstance {
 
 	public apply(compiler: webpack.Compiler) {
 		const pluginName = 'MiniHtmlWebpackPlugin';
-		let registeredAlready = false;
 
 		if (isWebpack4()) {
 			// @ts-ignore: Ignore for webpack 4 due to different typing
 			compiler.hooks.emit.tapAsync(pluginName, this.webpack4plugin);
 		} else {
-			compiler.hooks.compilation.tap(pluginName, (compilation) => {
-				if (registeredAlready) {
-					return;
-				}
-
+			compiler.hooks.thisCompilation.tap(pluginName, (compilation) => {
 				compilation.hooks.processAssets.tapPromise(
 					{
 						name: pluginName,
@@ -240,8 +235,6 @@ class MiniHtmlWebpackPlugin implements WebpackPluginInstance {
 					},
 					() => this.webpack5plugin(compilation)
 				);
-
-				registeredAlready = true;
 			});
 		}
 	}
