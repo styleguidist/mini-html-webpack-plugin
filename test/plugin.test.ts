@@ -1,5 +1,6 @@
 import webpack, { Configuration } from 'webpack';
 import { createFsFromVolume, Volume } from 'memfs';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { MiniHtmlWebpackPlugin } from '../src';
 
 function compile(config: Configuration, filenames = ['index.html']) {
@@ -47,6 +48,30 @@ const getConfig = (
 
 test('default options', async () => {
 	const result = await compile(getConfig({}));
+
+	expect(result['index.html']).toMatchSnapshot();
+});
+
+test('mini-css-extract-plugin', async () => {
+	const result = await compile({
+		mode: 'production',
+		entry: { main: './test/fixtures/css.js' },
+		module: {
+			rules: [
+				{
+					test: /\.css$/,
+					use: [MiniCssExtractPlugin.loader, 'css-loader'],
+				},
+			],
+		},
+		plugins: [
+			new MiniHtmlWebpackPlugin({}),
+			// @ts-ignore: MiniCssExtractPlugin types are broken
+			new MiniCssExtractPlugin({
+				filename: '[name].css',
+			}),
+		],
+	});
 
 	expect(result['index.html']).toMatchSnapshot();
 });
